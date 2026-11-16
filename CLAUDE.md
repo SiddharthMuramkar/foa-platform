@@ -1,3 +1,7 @@
+## Spec
+
+`SPEC.md` is the source of truth for what to build. Cite its requirement IDs (`FR-*`, `BR-*`, `SG-*`, `NFR-*`) in issues, PRs, tests and commits. Build order: §12; open decisions: §13.
+
 ## Agent skills
 
 ### Issue tracker
