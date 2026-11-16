@@ -1,0 +1,57 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13). Variant A 'Whole logo' stamp settings (FR-STAMP-03: placement and opacity are settings). Read by build.mjs (generator) and variant-a.tsx (settings table). Fractions are of the derivative's long edge unless noted.",
+  "variant": "A",
+  "element": "full logo (tiles + paw mark + wordmark), unchanged pixels of foa-logo-flat.png",
+  "icons": {
+    "plate": "#FFFFFF",
+    "favicon": [
+      { "size": 16, "logoWidth": 16, "radius": 3, "file": "icon-16.png", "bare": "icon-16-bare.png" },
+      { "size": 32, "logoWidth": 30, "radius": 6, "file": "icon-32.png", "bare": "icon-32-bare.png" },
+      { "size": 48, "logoWidth": 44, "radius": 9, "file": "icon-48.png", "bare": "icon-48-bare.png" }
+    ],
+    "appleTouch": { "size": 180, "logoWidth": 148, "file": "icon-180.png" },
+    "maskable": { "size": 512, "safeDiameter": 409.6, "logoDiagonal": 400, "file": "icon-maskable-512.png" }
+  },
+  "og": {
+    "width": 1200,
+    "height": 630,
+    "bandWidth": 360,
+    "logoWidth": 304,
+    "margin": 28,
+    "tagline": "Children’s art for animal welfare",
+    "footer": "foaglobal.org",
+    "artworkFit": "contain (never cropped) in the 840×630 slot; mat colour behind non-4:3 Artwork",
+    "mat": "#F3EFE7",
+    "divider": "#D9D4CA"
+  },
+  "preview": {
+    "placement": "bottom-right",
+    "opacity": 0.18,
+    "scale": 0.15,
+    "margin": 0.025,
+    "minLogoWidth": 160,
+    "blend": "multiply",
+    "backing": { "colour": "#FFFFFF", "opacity": 0.55, "pad": 0.08, "feather": 12, "radius": 0.07 },
+    "busy": { "lumaBelow": 0.35, "stdAbove": 0.2, "backingOpacity": 0.8 },
+    "ladder": [0.1, 0.18, 0.3, 0.5]
+  },
+  "judging": {
+    "placement": "top-left",
+    "opacity": 0.45,
+    "scale": 0.086,
+    "margin": 0.019,
+    "plate": { "colour": "#FFFFFF", "opacity": 0.9 },
+    "text": "FOA JUDGING",
+    "subtext": "Not for publication"
+  },
+  "certificate": {
+    "width": 1080,
+    "height": 1350,
+    "logoWidth": 440,
+    "logoTop": 92,
+    "seal": "typographic rosette (no logo part, so no PO decision needed)",
+    "sealColour": "#8A6116",
+    "accent": "#0055A5",
+    "qrSize": 232
+  }
+}

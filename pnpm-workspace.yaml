@@ -1,0 +1,6 @@
+# PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13)
+packages:
+  - apps/*
+allowBuilds:
+  sharp: true
+  unrs-resolver: false

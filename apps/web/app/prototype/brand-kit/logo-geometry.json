@@ -1,0 +1,37 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13). Measured from scripts/source/foa-logo-source.jpg (910x1024, flat variant = top half). 'source' boxes are inclusive raster px [x0,y0,x1,y1]; 'groups' are {x,y,w,h} in foa-logo-flat.png px (origin = source 72,46). Colours are medians of the eroded tile cores.",
+  "source": {
+    "file": "scripts/source/foa-logo-source.jpg",
+    "width": 910,
+    "height": 1024,
+    "flatCrop": { "x": 72, "y": 46, "w": 737, "h": 429 }
+  },
+  "flat": { "width": 737, "height": 429 },
+  "colours": {
+    "tileRed": "#CB2322",
+    "tileGreen": "#01AD01",
+    "tileBlue": "#263FF1",
+    "letters": "#FFFFFF",
+    "wordmark": "#000000",
+    "background": "#FFFFFF"
+  },
+  "groups": {
+    "tile-red": { "x": 4, "y": 4, "w": 225, "h": 346 },
+    "tile-green": { "x": 237, "y": 5, "w": 253, "h": 346 },
+    "tile-blue": { "x": 498, "y": 4, "w": 235, "h": 346 },
+    "letter-f": { "x": 59, "y": 165, "w": 129, "h": 160 },
+    "letter-o": { "x": 258, "y": 163, "w": 210, "h": 165 },
+    "letter-a": { "x": 516, "y": 165, "w": 195, "h": 160 },
+    "mark": { "x": 298, "y": 183, "w": 130, "h": 125 },
+    "mark-disc": { "x": 298, "y": 183, "w": 130, "h": 125 },
+    "mark-paw": { "x": 315, "y": 200, "w": 98, "h": 69 },
+    "mark-hands": { "x": 313, "y": 259, "w": 104, "h": 32 },
+    "wordmark": { "x": 5, "y": 370, "w": 724, "h": 55 }
+  },
+  "lockups": {
+    "full": { "x": 0, "y": 0, "w": 737, "h": 429 },
+    "tiles": { "x": 0, "y": 0, "w": 737, "h": 355 },
+    "mark": { "x": 296, "y": 181, "w": 134, "h": 129 },
+    "wordmark": { "x": 1, "y": 366, "w": 732, "h": 63 }
+  }
+}

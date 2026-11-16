@@ -1,0 +1,115 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13) */
+@import "tailwindcss";
+
+/*
+ * Prototype chrome tokens (SPEC §4.8). Logo colours are NOT tokens: the logo is only ever shown as
+ * the unchanged raster/SVG. Contrast (WCAG 2.2 AA) checked for every text/bg pair below:
+ *   light  fg 16.4:1 · muted 6.9:1 · primary 7.0:1 · success-text 5.1:1 · border-strong 3.4:1
+ *   dark   fg 16.1:1 · muted 8.5:1 · primary 8.5:1 · success-text 8.2:1 · border-strong 4.1:1
+ *   donate white-on-#E52421 4.56:1 (solid red fill only for Donate).
+ * Theme: follows prefers-color-scheme; [data-theme=light|dark] on <html> or any wrapper forces it.
+ */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --bk-bg: #faf8f4;
+  --bk-surface: #ffffff;
+  --bk-fg: #1a1a1a;
+  --bk-muted: #5a5650;
+  --bk-border: #d9d4ca;
+  --bk-border-strong: #8c857a;
+  --bk-primary: #0055a5;
+  --bk-success: #00a651;
+  --bk-success-text: #007a3d;
+  --bk-donate: #e52421;
+  --bk-on-donate: #ffffff;
+  --bk-plate: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bk-bg: #121417;
+    --bk-surface: #1c1f24;
+    --bk-fg: #f2efe9;
+    --bk-muted: #b4afa6;
+    --bk-border: #3a3f47;
+    --bk-border-strong: #6f7782;
+    --bk-primary: #7db4f5;
+    --bk-success: #4cc27a;
+    --bk-success-text: #4cc27a;
+    --bk-donate: #e52421;
+    --bk-on-donate: #ffffff;
+    --bk-plate: #ffffff;
+  }
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bk-bg: #121417;
+  --bk-surface: #1c1f24;
+  --bk-fg: #f2efe9;
+  --bk-muted: #b4afa6;
+  --bk-border: #3a3f47;
+  --bk-border-strong: #6f7782;
+  --bk-primary: #7db4f5;
+  --bk-success: #4cc27a;
+  --bk-success-text: #4cc27a;
+  --bk-donate: #e52421;
+  --bk-on-donate: #ffffff;
+  --bk-plate: #ffffff;
+}
+
+/* `dark:` = forced dark, or OS dark unless forced light (on <html> or any ancestor). */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:not([data-theme="light"], [data-theme="light"] *)) {
+      @slot;
+    }
+  }
+}
+
+@theme inline {
+  --color-bk-bg: var(--bk-bg);
+  --color-bk-surface: var(--bk-surface);
+  --color-bk-fg: var(--bk-fg);
+  --color-bk-muted: var(--bk-muted);
+  --color-bk-border: var(--bk-border);
+  --color-bk-border-strong: var(--bk-border-strong);
+  --color-bk-primary: var(--bk-primary);
+  --color-bk-success: var(--bk-success);
+  --color-bk-success-text: var(--bk-success-text);
+  --color-bk-donate: var(--bk-donate);
+  --color-bk-on-donate: var(--bk-on-donate);
+  --color-bk-plate: var(--bk-plate);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  background: var(--bk-bg);
+}
+
+body {
+  background: var(--bk-bg);
+  color: var(--bk-fg);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid var(--bk-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

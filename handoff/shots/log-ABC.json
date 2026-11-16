@@ -1,0 +1,152 @@
+{
+  "A": {
+    "390-light": {
+      "scrollW": 390,
+      "vw": 390,
+      "docH": 16372,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "light",
+      "switcher": false,
+      "errs": []
+    },
+    "390-dark": {
+      "scrollW": 390,
+      "vw": 390,
+      "docH": 16372,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "dark",
+      "switcher": false,
+      "errs": []
+    },
+    "1440-light": {
+      "scrollW": 1440,
+      "vw": 1440,
+      "docH": 9753,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "light",
+      "switcher": false,
+      "errs": []
+    },
+    "1440-dark": {
+      "scrollW": 1440,
+      "vw": 1440,
+      "docH": 9753,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "dark",
+      "switcher": false,
+      "errs": []
+    },
+    "watermarkNatural": [
+      1600,
+      1200
+    ]
+  },
+  "B": {
+    "390-light": {
+      "scrollW": 390,
+      "vw": 390,
+      "docH": 14427,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "light",
+      "switcher": false,
+      "errs": []
+    },
+    "390-dark": {
+      "scrollW": 390,
+      "vw": 390,
+      "docH": 14427,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "dark",
+      "switcher": false,
+      "errs": []
+    },
+    "1440-light": {
+      "scrollW": 1440,
+      "vw": 1440,
+      "docH": 8747,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "light",
+      "switcher": false,
+      "errs": []
+    },
+    "1440-dark": {
+      "scrollW": 1440,
+      "vw": 1440,
+      "docH": 8747,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "dark",
+      "switcher": false,
+      "errs": []
+    },
+    "watermarkNatural": [
+      1600,
+      1200
+    ]
+  },
+  "C": {
+    "390-light": {
+      "scrollW": 390,
+      "vw": 390,
+      "docH": 16994,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "light",
+      "switcher": false,
+      "errs": []
+    },
+    "390-dark": {
+      "scrollW": 390,
+      "vw": 390,
+      "docH": 16994,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "dark",
+      "switcher": false,
+      "errs": []
+    },
+    "1440-light": {
+      "scrollW": 1440,
+      "vw": 1440,
+      "docH": 11788,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "light",
+      "switcher": false,
+      "errs": []
+    },
+    "1440-dark": {
+      "scrollW": 1440,
+      "vw": 1440,
+      "docH": 11788,
+      "offenders": [],
+      "nOffenders": 0,
+      "broken": [],
+      "dataTheme": "dark",
+      "switcher": false,
+      "errs": []
+    },
+    "watermarkNatural": [
+      1600,
+      1200
+    ]
+  }
+}

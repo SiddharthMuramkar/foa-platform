@@ -1,0 +1,6 @@
+PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13)
+
+PlusJakartaSans-400.ttf and PlusJakartaSans-700.ttf: Plus Jakarta Sans, Copyright 2020 The Plus Jakarta Sans
+Project Authors (https://github.com/tokotype/PlusJakartaSans), licensed under the SIL Open Font License 1.1
+(https://openfontlicense.org). Static 400 and 700 instances, the same two weights the site loads via next/font.
+Used only by ../build.mjs so text baked into Variant C images matches the site font (SPEC §4.8).

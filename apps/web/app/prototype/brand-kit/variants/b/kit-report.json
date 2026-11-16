@@ -1,0 +1,294 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13). Written by build.mjs; read by variant-b.tsx.",
+  "switchPx": 160,
+  "settings": {
+    "previewBadge": {
+      "element": "mark + \"FOA\" label badge",
+      "placement": "bottom-right",
+      "opacity": 0.85,
+      "heightPct": 4.5,
+      "insetPct": 2,
+      "minHeightPx": 28
+    },
+    "judgingBadge": {
+      "element": "mark + \"FOA JUDGING\" + Submission number badge",
+      "placement": "top-left",
+      "opacity": 0.55,
+      "heightPct": 2.5,
+      "insetPct": 1.5,
+      "minHeightPx": 24
+    },
+    "ogStamp": {
+      "element": "full logo (unchanged)",
+      "placement": "bottom of white side panel",
+      "opacity": 1,
+      "widthPx": 288,
+      "minWidthPx": 160
+    },
+    "certLogo": {
+      "element": "full logo (unchanged)",
+      "placement": "top-centre header",
+      "opacity": 1,
+      "widthPx": 440,
+      "minWidthPx": 160
+    },
+    "certSeal": {
+      "element": "mark inside a rosette seal",
+      "placement": "bottom-left, beside number and QR",
+      "opacity": 1,
+      "diameterPx": 264
+    }
+  },
+  "mark": {
+    "cropPx": {
+      "w": 134,
+      "h": 129
+    },
+    "discPx": {
+      "w": 133,
+      "h": 127
+    }
+  },
+  "wordmark": {
+    "capFlatPx": 55,
+    "capAtSwitchPx": 11.9,
+    "capAt120Px": 9
+  },
+  "icons": {
+    "icon-16.png": {
+      "size": 16,
+      "discPx": 14,
+      "scale": 0.105,
+      "clippedMinChannel": 245
+    },
+    "icon-32.png": {
+      "size": 32,
+      "discPx": 28,
+      "scale": 0.211,
+      "clippedMinChannel": 245
+    },
+    "icon-48.png": {
+      "size": 48,
+      "discPx": 42,
+      "scale": 0.316,
+      "clippedMinChannel": 245
+    },
+    "icon-180.png": {
+      "size": 180,
+      "discPx": 112,
+      "scale": 0.842,
+      "upscaled": false
+    },
+    "icon-maskable-512.png": {
+      "size": 512,
+      "discPx": 264,
+      "scale": 1.985,
+      "upscaled": true,
+      "safeZoneDiameter": 409.6,
+      "markRadiusPx": 132
+    },
+    "icon-180-ring-rejected.png": {
+      "size": 180,
+      "discPx": 100,
+      "scale": 0.752,
+      "upscaled": false,
+      "rejected": "tri-colour ring is new artwork"
+    }
+  },
+  "contrast": {
+    "preview-light": {
+      "bg": [
+        252,
+        247,
+        243
+      ],
+      "labelOnPill": 11.05,
+      "markGreenOnPill": 2.61,
+      "pillEdgeOnArtwork": 1.05
+    },
+    "preview-busy": {
+      "bg": [
+        155,
+        211,
+        174
+      ],
+      "labelOnPill": 11.6,
+      "markGreenOnPill": 2.6,
+      "pillEdgeOnArtwork": 1.58
+    },
+    "preview-dark": {
+      "bg": [
+        40,
+        52,
+        44
+      ],
+      "labelOnPill": 12.72,
+      "markGreenOnPill": 2.8,
+      "pillEdgeOnArtwork": 9.86
+    },
+    "judging": {
+      "bg": [
+        219,
+        234,
+        216
+      ],
+      "labelOnPill": 4.14,
+      "labelOnPillDarkArtwork": 6.07
+    },
+    "markGreenOnWhite": 3.01,
+    "pawWhiteOnGreen": 3.01,
+    "whitePlateOnDarkTab": 16.1,
+    "markGreenOnLightTab": 2.3
+  },
+  "files": {
+    "icon-16.png": {
+      "w": 16,
+      "h": 16,
+      "bytes": 797
+    },
+    "icon-32.png": {
+      "w": 32,
+      "h": 32,
+      "bytes": 2197
+    },
+    "icon-48.png": {
+      "w": 48,
+      "h": 48,
+      "bytes": 4355
+    },
+    "icon-180.png": {
+      "w": 180,
+      "h": 180,
+      "bytes": 25514
+    },
+    "icon-maskable-512.png": {
+      "w": 512,
+      "h": 512,
+      "bytes": 120975
+    },
+    "icon-180-ring-rejected.png": {
+      "w": 180,
+      "h": 180,
+      "bytes": 25086
+    },
+    "og-card.png": {
+      "w": 1200,
+      "h": 630,
+      "bytes": 885098
+    },
+    "og-card-q82.jpg": {
+      "w": 1200,
+      "h": 630,
+      "bytes": 110614
+    },
+    "preview-watermarked.jpg": {
+      "w": 1600,
+      "h": 1200,
+      "bytes": 294848
+    },
+    "judging-marked.jpg": {
+      "w": 2560,
+      "h": 1920,
+      "bytes": 710060
+    },
+    "judging-crop.png": {
+      "w": 760,
+      "h": 240,
+      "bytes": 116954
+    },
+    "certificate-share.png": {
+      "w": 1080,
+      "h": 1350,
+      "bytes": 193375
+    },
+    "badge-preview.png": {
+      "w": 176,
+      "h": 72,
+      "bytes": 11268
+    },
+    "badge-judging.png": {
+      "w": 615,
+      "h": 64,
+      "bytes": 19193
+    },
+    "badge-on-light.png": {
+      "w": 520,
+      "h": 200,
+      "bytes": 40237
+    },
+    "badge-on-busy.png": {
+      "w": 520,
+      "h": 200,
+      "bytes": 309180
+    },
+    "badge-on-dark.png": {
+      "w": 520,
+      "h": 200,
+      "bytes": 191964
+    }
+  },
+  "og": {
+    "artworkPx": {
+      "w": 840,
+      "h": 630
+    },
+    "artworkCropped": false,
+    "logoPx": {
+      "w": 288,
+      "h": 168
+    },
+    "squareCentreCropKeepsLogo": false
+  },
+  "certificate": {
+    "logoPx": {
+      "w": 440,
+      "h": 256
+    },
+    "sealPx": 264,
+    "sealMarkScale": 0.842,
+    "qrPx": 222,
+    "qrIsPlaceholder": true
+  },
+  "badges": {
+    "preview": {
+      "w": 176,
+      "h": 72,
+      "markScale": 0.436,
+      "clippedMinChannel": 245,
+      "pos": {
+        "left": 1392,
+        "top": 1096
+      }
+    },
+    "judging": {
+      "w": 615,
+      "h": 64,
+      "markScale": 0.391,
+      "clippedMinChannel": 245,
+      "inset": 38
+    }
+  },
+  "crops": {
+    "preview": {
+      "w": 640,
+      "h": 360
+    },
+    "judging": {
+      "w": 760,
+      "h": 240
+    },
+    "patch": {
+      "w": 520,
+      "h": 200
+    }
+  },
+  "safeguarding": {
+    "publicLine": "Aarav S. · Drawing, ages 6–10 · Pune",
+    "displayName": "Aarav S.",
+    "judgingFields": [
+      "submissionNumber",
+      "category",
+      "title"
+    ]
+  }
+}

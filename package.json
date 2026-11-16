@@ -1,0 +1,10 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13)",
+  "name": "foa-platform",
+  "private": true,
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "brand-kit": "pnpm --dir apps/web exec next dev -p 3113",
+    "brand-kit:assets": "pnpm --dir apps/web run build-kit"
+  }
+}

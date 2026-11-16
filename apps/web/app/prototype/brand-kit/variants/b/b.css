@@ -1,0 +1,194 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13) */
+
+/*
+ * Global stylesheet (was b.module.css): the shared Turbopack "*.css" rule in next.config.ts also matched
+ * *.module.css and turned it into plain global CSS, so every `s.x` export was undefined. Classes are now
+ * global and prefixed vb- (see cls.ts), imported once by variant-b.tsx.
+ *
+ * Variant B theme switch. Colour VALUES live only in tokens.ts (inline --bl-* light / --bd-* dark).
+ * This file picks one set with the same rule as globals.css: a forced data-theme (on <html> or the page
+ * wrapper) wins, otherwise the OS setting.
+ */
+.vb-root {
+  --b-po-bg: var(--bl-po-bg);
+  --b-po-fg: var(--bl-po-fg);
+  --b-po-border: var(--bl-po-border);
+  --b-mark-chip-bg: var(--bl-mark-chip-bg);
+  --b-mark-chip-fg: var(--bl-mark-chip-fg);
+  --b-logo-chip-bg: var(--bl-logo-chip-bg);
+  --b-logo-chip-fg: var(--bl-logo-chip-fg);
+  --b-chat-bg: var(--bl-chat-bg);
+  --b-bubble-bg: var(--bl-bubble-bg);
+  --b-bubble-fg: var(--bl-bubble-fg);
+  --b-bubble-meta: var(--bl-bubble-meta);
+  --b-bubble-link: var(--bl-bubble-link);
+  --b-reject-bg: var(--bl-reject-bg);
+  --b-reject-fg: var(--bl-reject-fg);
+  --b-reject-border: var(--bl-reject-border);
+  --b-switch-line: var(--bl-switch-line);
+  --b-tab-bar-light: var(--bl-tab-bar-light);
+  --b-tab-active-light: var(--bl-tab-active-light);
+  --b-tab-text-light: var(--bl-tab-text-light);
+  --b-tab-bar-dark: var(--bl-tab-bar-dark);
+  --b-tab-active-dark: var(--bl-tab-active-dark);
+  --b-tab-text-dark: var(--bl-tab-text-dark);
+  --b-phone-wall: var(--bl-phone-wall);
+  --b-phone-label: var(--bl-phone-label);
+  --b-phone-slot: var(--bl-phone-slot);
+  --b-safe-zone: var(--bl-safe-zone);
+  --b-safe-zone-text: var(--bl-safe-zone-text);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vb-root:where(:not([data-theme="light"], [data-theme="light"] *)) {
+    --b-po-bg: var(--bd-po-bg);
+    --b-po-fg: var(--bd-po-fg);
+    --b-po-border: var(--bd-po-border);
+    --b-mark-chip-bg: var(--bd-mark-chip-bg);
+    --b-mark-chip-fg: var(--bd-mark-chip-fg);
+    --b-logo-chip-bg: var(--bd-logo-chip-bg);
+    --b-logo-chip-fg: var(--bd-logo-chip-fg);
+    --b-chat-bg: var(--bd-chat-bg);
+    --b-bubble-bg: var(--bd-bubble-bg);
+    --b-bubble-fg: var(--bd-bubble-fg);
+    --b-bubble-meta: var(--bd-bubble-meta);
+    --b-bubble-link: var(--bd-bubble-link);
+    --b-reject-bg: var(--bd-reject-bg);
+    --b-reject-fg: var(--bd-reject-fg);
+    --b-reject-border: var(--bd-reject-border);
+    --b-switch-line: var(--bd-switch-line);
+    --b-tab-bar-light: var(--bd-tab-bar-light);
+    --b-tab-active-light: var(--bd-tab-active-light);
+    --b-tab-text-light: var(--bd-tab-text-light);
+    --b-tab-bar-dark: var(--bd-tab-bar-dark);
+    --b-tab-active-dark: var(--bd-tab-active-dark);
+    --b-tab-text-dark: var(--bd-tab-text-dark);
+    --b-phone-wall: var(--bd-phone-wall);
+    --b-phone-label: var(--bd-phone-label);
+    --b-phone-slot: var(--bd-phone-slot);
+    --b-safe-zone: var(--bd-safe-zone);
+    --b-safe-zone-text: var(--bd-safe-zone-text);
+  }
+}
+
+.vb-root:where([data-theme="dark"], [data-theme="dark"] *) {
+  --b-po-bg: var(--bd-po-bg);
+  --b-po-fg: var(--bd-po-fg);
+  --b-po-border: var(--bd-po-border);
+  --b-mark-chip-bg: var(--bd-mark-chip-bg);
+  --b-mark-chip-fg: var(--bd-mark-chip-fg);
+  --b-logo-chip-bg: var(--bd-logo-chip-bg);
+  --b-logo-chip-fg: var(--bd-logo-chip-fg);
+  --b-chat-bg: var(--bd-chat-bg);
+  --b-bubble-bg: var(--bd-bubble-bg);
+  --b-bubble-fg: var(--bd-bubble-fg);
+  --b-bubble-meta: var(--bd-bubble-meta);
+  --b-bubble-link: var(--bd-bubble-link);
+  --b-reject-bg: var(--bd-reject-bg);
+  --b-reject-fg: var(--bd-reject-fg);
+  --b-reject-border: var(--bd-reject-border);
+  --b-switch-line: var(--bd-switch-line);
+  --b-tab-bar-light: var(--bd-tab-bar-light);
+  --b-tab-active-light: var(--bd-tab-active-light);
+  --b-tab-text-light: var(--bd-tab-text-light);
+  --b-tab-bar-dark: var(--bd-tab-bar-dark);
+  --b-tab-active-dark: var(--bd-tab-active-dark);
+  --b-tab-text-dark: var(--bd-tab-text-dark);
+  --b-phone-wall: var(--bd-phone-wall);
+  --b-phone-label: var(--bd-phone-label);
+  --b-phone-slot: var(--bd-phone-slot);
+  --b-safe-zone: var(--bd-safe-zone);
+  --b-safe-zone-text: var(--bd-safe-zone-text);
+}
+
+.vb-po {
+  background: var(--b-po-bg);
+  color: var(--b-po-fg);
+  border: 2px solid var(--b-po-border);
+}
+
+.vb-chip-mark {
+  background: var(--b-mark-chip-bg);
+  color: var(--b-mark-chip-fg);
+}
+
+.vb-chip-logo {
+  background: var(--b-logo-chip-bg);
+  color: var(--b-logo-chip-fg);
+}
+
+.vb-switch-rule {
+  border-top: 2px dashed var(--b-switch-line);
+}
+
+.vb-reject {
+  background: var(--b-reject-bg);
+  color: var(--b-reject-fg);
+  border: 2px dashed var(--b-reject-border);
+}
+
+/* Browser tab mocks: a light and a dark browser are always shown side by side. */
+.vb-tabs-light {
+  --tab-bar: var(--b-tab-bar-light);
+  --tab-active: var(--b-tab-active-light);
+  --tab-text: var(--b-tab-text-light);
+}
+
+.vb-tabs-dark {
+  --tab-bar: var(--b-tab-bar-dark);
+  --tab-active: var(--b-tab-active-dark);
+  --tab-text: var(--b-tab-text-dark);
+}
+
+.vb-tab-bar {
+  background: var(--tab-bar);
+  color: var(--tab-text);
+}
+
+.vb-tab-active {
+  background: var(--tab-active);
+}
+
+/* Magnified icons keep hard pixel edges. */
+.vb-pixelated {
+  image-rendering: pixelated;
+}
+
+.vb-safe-zone {
+  border: 2px dashed var(--b-safe-zone);
+}
+
+.vb-safe-zone-text {
+  color: var(--b-safe-zone-text);
+}
+
+.vb-phone {
+  background: var(--b-phone-wall);
+  color: var(--b-phone-label);
+}
+
+.vb-phone-slot {
+  background: var(--b-phone-slot);
+}
+
+.vb-chat {
+  background: var(--b-chat-bg);
+}
+
+.vb-bubble {
+  background: var(--b-bubble-bg);
+  color: var(--b-bubble-fg);
+}
+
+.vb-bubble-meta {
+  color: var(--b-bubble-meta);
+}
+
+.vb-bubble-link {
+  color: var(--b-bubble-link);
+}
+
+/* iOS-style continuous corner, approximated (the OS applies its own mask to apple-touch-icon). */
+.vb-squircle {
+  border-radius: 22.37%;
+}

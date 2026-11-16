@@ -1,0 +1,294 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13). Written by build.mjs; read by variant-a.tsx.",
+  "files": {
+    "icon-16.png": {
+      "width": 16,
+      "height": 16,
+      "bytes": 786
+    },
+    "icon-16-bare.png": {
+      "width": 16,
+      "height": 16,
+      "bytes": 735
+    },
+    "icon-32.png": {
+      "width": 32,
+      "height": 32,
+      "bytes": 1854
+    },
+    "icon-32-bare.png": {
+      "width": 32,
+      "height": 32,
+      "bytes": 1937
+    },
+    "icon-48.png": {
+      "width": 48,
+      "height": 48,
+      "bytes": 2759
+    },
+    "icon-48-bare.png": {
+      "width": 48,
+      "height": 48,
+      "bytes": 2908
+    },
+    "icon-180.png": {
+      "width": 180,
+      "height": 180,
+      "bytes": 10507
+    },
+    "icon-maskable-512.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 38937
+    },
+    "og-card.png": {
+      "width": 1200,
+      "height": 630,
+      "bytes": 869844
+    },
+    "preview-watermarked.jpg": {
+      "width": 1600,
+      "height": 1200,
+      "bytes": 289589
+    },
+    "preview-watermarked-dark.jpg": {
+      "width": 1600,
+      "height": 1200,
+      "bytes": 286961
+    },
+    "wm-crop-light-op10.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 384576
+    },
+    "wm-crop-dark-op10.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 382410
+    },
+    "wm-crop-light-op18.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 385344
+    },
+    "wm-crop-dark-op18.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 383808
+    },
+    "wm-crop-light-op30.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 386348
+    },
+    "wm-crop-dark-op30.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 383810
+    },
+    "wm-crop-light-op50.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 388377
+    },
+    "wm-crop-dark-op50.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 380423
+    },
+    "wm-crop-light-op18-norule.png": {
+      "width": 440,
+      "height": 300,
+      "bytes": 385344
+    },
+    "judging-marked.jpg": {
+      "width": 2560,
+      "height": 1920,
+      "bytes": 712441
+    },
+    "judging-crop.png": {
+      "width": 799,
+      "height": 329,
+      "bytes": 222190
+    },
+    "certificate-share.png": {
+      "width": 1080,
+      "height": 1350,
+      "bytes": 141208
+    }
+  },
+  "icons": [
+    {
+      "file": "icon-16.png",
+      "size": 16,
+      "logoWidth": 16,
+      "logoHeight": 9.3,
+      "letterPx": 3.5,
+      "wordmarkPx": 1.2,
+      "markPx": 2.8
+    },
+    {
+      "file": "icon-32.png",
+      "size": 32,
+      "logoWidth": 30,
+      "logoHeight": 17.5,
+      "letterPx": 6.5,
+      "wordmarkPx": 2.2,
+      "markPx": 5.3
+    },
+    {
+      "file": "icon-48.png",
+      "size": 48,
+      "logoWidth": 44,
+      "logoHeight": 25.6,
+      "letterPx": 9.6,
+      "wordmarkPx": 3.3,
+      "markPx": 7.8
+    },
+    {
+      "file": "icon-180.png",
+      "size": 180,
+      "logoWidth": 148,
+      "logoHeight": 86.1,
+      "letterPx": 32.1,
+      "wordmarkPx": 11,
+      "markPx": 26.1
+    },
+    {
+      "file": "icon-maskable-512.png",
+      "size": 512,
+      "logoWidth": 345.7,
+      "logoHeight": 201.2,
+      "letterPx": 75.1,
+      "wordmarkPx": 25.8,
+      "markPx": 61
+    }
+  ],
+  "safeZone": {
+    "safeRadius": 204.8,
+    "logoCornerRadius": 200,
+    "inside": true,
+    "logoWidthShare": 67.5
+  },
+  "og": {
+    "logoWidth": 304,
+    "logoHeight": 177,
+    "logoBox": {
+      "x": 28,
+      "y": 28,
+      "w": 304,
+      "h": 177
+    }
+  },
+  "watermark": {
+    "crop": {
+      "left": 1160,
+      "top": 900,
+      "width": 440,
+      "height": 300
+    },
+    "box": {
+      "left": 1282,
+      "top": 982,
+      "w": 278,
+      "h": 178,
+      "logoLeft": 1301,
+      "logoTop": 1001,
+      "logoW": 240,
+      "logoH": 140
+    },
+    "reference": {
+      "lettersVsTiles": 7.94,
+      "wordmark": 19.17
+    },
+    "light": {
+      "luma": 0.86,
+      "std": 0.18,
+      "busy": false,
+      "backingOpacity": 0.55
+    },
+    "dark": {
+      "luma": 0.14,
+      "std": 0.18,
+      "busy": true,
+      "backingOpacity": 0.8
+    },
+    "noRule": {
+      "backingOpacity": 0.55
+    },
+    "ladder": [
+      {
+        "opacity": 0.1,
+        "light": {
+          "lettersVsTiles": 1.17,
+          "wordmark": 1.22
+        },
+        "dark": {
+          "lettersVsTiles": 1.17,
+          "wordmark": 1.23
+        }
+      },
+      {
+        "opacity": 0.18,
+        "light": {
+          "lettersVsTiles": 1.34,
+          "wordmark": 1.46
+        },
+        "dark": {
+          "lettersVsTiles": 1.32,
+          "wordmark": 1.46
+        }
+      },
+      {
+        "opacity": 0.3,
+        "light": {
+          "lettersVsTiles": 1.67,
+          "wordmark": 1.96
+        },
+        "dark": {
+          "lettersVsTiles": 1.63,
+          "wordmark": 1.96
+        }
+      },
+      {
+        "opacity": 0.5,
+        "light": {
+          "lettersVsTiles": 2.47,
+          "wordmark": 3.44
+        },
+        "dark": {
+          "lettersVsTiles": 2.36,
+          "wordmark": 3.37
+        }
+      }
+    ]
+  },
+  "judging": {
+    "label": {
+      "left": 49,
+      "top": 49,
+      "w": 630,
+      "h": 180
+    },
+    "logoWidth": 220,
+    "crop": {
+      "left": 0,
+      "top": 0,
+      "width": 799,
+      "height": 329
+    }
+  },
+  "certificate": {
+    "logo": {
+      "x": 320,
+      "y": 92,
+      "w": 440,
+      "h": 256
+    },
+    "qr": {
+      "x": 650,
+      "y": 856,
+      "size": 232
+    }
+  }
+}

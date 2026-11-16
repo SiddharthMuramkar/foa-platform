@@ -1,0 +1,151 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/13). Written by build.mjs; quoted by variant-c.tsx.",
+  "icons": {
+    "icon-16.png": {
+      "size": 16,
+      "logoPx": {
+        "w": 15.04,
+        "h": 7.22
+      },
+      "letterPx": 3.27,
+      "gapPx": 0.16
+    },
+    "icon-32.png": {
+      "size": 32,
+      "logoPx": {
+        "w": 30.08,
+        "h": 14.45
+      },
+      "letterPx": 6.55,
+      "gapPx": 0.33
+    },
+    "icon-48.png": {
+      "size": 48,
+      "logoPx": {
+        "w": 45.12,
+        "h": 21.67
+      },
+      "letterPx": 9.82,
+      "gapPx": 0.49
+    },
+    "icon-180.png": {
+      "size": 180,
+      "logoPx": {
+        "w": 152.07,
+        "h": 73.03
+      },
+      "letterPx": 33.1,
+      "gapPx": 1.66
+    },
+    "icon-maskable-512.png": {
+      "size": 512,
+      "logoPx": {
+        "w": 354.35,
+        "h": 170.18
+      },
+      "letterPx": 77.14,
+      "gapPx": 3.86
+    },
+    "compare-wholelogo-16.png": {
+      "size": 16,
+      "logoPx": {
+        "w": 15.04,
+        "h": 8.76
+      },
+      "letterPx": 3.27,
+      "gapPx": 0.16
+    },
+    "compare-wholelogo-32.png": {
+      "size": 32,
+      "logoPx": {
+        "w": 30.08,
+        "h": 17.51
+      },
+      "letterPx": 6.53,
+      "gapPx": 0.33
+    }
+  },
+  "maskable": {
+    "safeRadius": 204.8,
+    "trioHalfDiagonal": 196.5
+  },
+  "og": {
+    "logoWidth": 330,
+    "logoBox": {
+      "x": 802,
+      "y": 48,
+      "w": 330,
+      "h": 192
+    },
+    "squareCropKeepsLogo": false,
+    "titleLines": [
+      "Sunny Hills for",
+      "Every Paw"
+    ]
+  },
+  "watermark": {
+    "logoWidth": 160,
+    "pad": 12,
+    "radius": 10,
+    "strip": 10,
+    "opacity": 1,
+    "plate": {
+      "w": 184,
+      "h": 117
+    },
+    "logoHeight": 93,
+    "wordmarkHeightPx": 11.9,
+    "tileLetterHeightPx": 34.7,
+    "areaPct": 1.86,
+    "plateVsArtFixture": 1.26,
+    "plateVsArtDark": 10.39,
+    "crop": {
+      "left": 0,
+      "top": 940,
+      "width": 720,
+      "height": 260
+    }
+  },
+  "judging": {
+    "opacity": 0.09,
+    "trioWidth": 96,
+    "fontSize": 40,
+    "dx": 820,
+    "dy": 330,
+    "shift": 273,
+    "inkOnLightArt": 1.19,
+    "haloOnDarkArt": 1.31,
+    "crop": {
+      "left": 1156,
+      "top": 603,
+      "width": 720,
+      "height": 360
+    }
+  },
+  "certificate": {
+    "logoWidth": 400,
+    "logoBox": {
+      "x": 340,
+      "y": 84,
+      "w": 400,
+      "h": 233
+    },
+    "sealTrioWidth": 140,
+    "sealRingLetterSpacing": 6.59,
+    "qrSize": 222
+  },
+  "files": {
+    "icon-16.png": 717,
+    "icon-32.png": 1574,
+    "icon-48.png": 2287,
+    "icon-180.png": 7559,
+    "icon-maskable-512.png": 31779,
+    "compare-wholelogo-16.png": 790,
+    "compare-wholelogo-32.png": 1955,
+    "og-card.png": 732406,
+    "og-card-q85.jpg": 107920,
+    "preview-watermarked.jpg": 293073,
+    "judging-marked.jpg": 772294,
+    "certificate-share.png": 147174
+  }
+}
