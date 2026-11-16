@@ -1,0 +1,4 @@
+'created' timestamp seems very low; regarding as unix timestamp
+1 extra bytes in post.stringData array
+helv               | A IoU 0.7636 mean 0.844 p95 2.253 | E IoU 0.8016 mean 0.715 p95 2.250 | W IoU 0.8890 mean 0.412 p95 1.231 | B IoU 0.9432 mean 0.207 p95 0.625 | 603s
+saved /private/tmp/claude-501/-Users-siddharth-Developer-foa-platform/bb023209-0394-49cb-8b5c-40cbb0b8328c/scratchpad/logo/work/fit_results_helv.json

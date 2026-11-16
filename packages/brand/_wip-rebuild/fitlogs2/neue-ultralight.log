@@ -1,0 +1,3 @@
+1 extra bytes in post.stringData array
+neue-ultralight    | A IoU 0.2151 mean 1.969 p95 4.250 | E IoU 0.7650 mean 0.818 p95 2.674 | W IoU 0.8436 mean 0.604 p95 2.000 | B IoU 0.9273 mean 0.267 p95 0.839 | 579s
+saved /private/tmp/claude-501/-Users-siddharth-Developer-foa-platform/bb023209-0394-49cb-8b5c-40cbb0b8328c/scratchpad/logo/work/fit_results_neue-ultralight.json

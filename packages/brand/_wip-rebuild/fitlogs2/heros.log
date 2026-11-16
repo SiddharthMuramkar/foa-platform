@@ -1,0 +1,2 @@
+heros              | A IoU 0.7518 mean 0.887 p95 2.500 | E IoU 0.8049 mean 0.706 p95 2.375 | W IoU 0.8717 mean 0.484 p95 1.500 | B IoU 0.9351 mean 0.232 p95 0.791 | 600s
+saved /private/tmp/claude-501/-Users-siddharth-Developer-foa-platform/bb023209-0394-49cb-8b5c-40cbb0b8328c/scratchpad/logo/work/fit_results_heros.json

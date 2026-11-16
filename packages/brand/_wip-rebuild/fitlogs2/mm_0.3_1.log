@@ -1,0 +1,2 @@
+mm:0.3:1           | A IoU 0.7544 mean 0.909 p95 2.875 | E IoU 0.7909 mean 0.686 p95 2.516 | W IoU 0.8575 mean 0.521 p95 1.630 | B IoU 0.9153 mean 0.308 p95 1.000 | 511s
+saved /private/tmp/claude-501/-Users-siddharth-Developer-foa-platform/bb023209-0394-49cb-8b5c-40cbb0b8328c/scratchpad/logo/work/fit_results_mm0.31.json

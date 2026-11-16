@@ -1,0 +1,96 @@
+{
+  "svg": "/private/tmp/claude-501/-Users-siddharth-Developer-foa-platform/bb023209-0394-49cb-8b5c-40cbb0b8328c/scratchpad/logo/work/fallback/wordmark_traced.svg",
+  "source": "foa-logo.jpg top half, wordmark band x71-807 y410-477 (px, exclusive end)",
+  "method": "band crop pad 6, Lanczos 8x, threshold, 8-conn components (i-dots merged), potracer per glyph",
+  "params": {
+    "thresh": 124.0,
+    "alphamax": 0.8,
+    "opticurve": true,
+    "opttolerance": 0.05,
+    "turdsize": 16
+  },
+  "glyph_count": 16,
+  "glyph_ids": [
+    "wm-0-F",
+    "wm-1-r",
+    "wm-2-i",
+    "wm-3-e",
+    "wm-4-n",
+    "wm-5-d",
+    "wm-6-s",
+    "wm-7-o",
+    "wm-8-f",
+    "wm-9-A",
+    "wm-10-n",
+    "wm-11-i",
+    "wm-12-m",
+    "wm-13-a",
+    "wm-14-l",
+    "wm-15-s"
+  ],
+  "subpaths": {
+    "wm-0-F": 1,
+    "wm-1-r": 1,
+    "wm-2-i": 2,
+    "wm-3-e": 2,
+    "wm-4-n": 1,
+    "wm-5-d": 2,
+    "wm-6-s": 1,
+    "wm-7-o": 2,
+    "wm-8-f": 1,
+    "wm-9-A": 2,
+    "wm-10-n": 1,
+    "wm-11-i": 2,
+    "wm-12-m": 1,
+    "wm-13-a": 2,
+    "wm-14-l": 1,
+    "wm-15-s": 1
+  },
+  "path_bytes": 42790,
+  "targets": {
+    "iou": 0.98,
+    "mean_px": 0.35,
+    "p95_px": 0.75
+  },
+  "metrics_1x": {
+    "iou": 0.98521,
+    "mean_px": 0.0509,
+    "p95_px": 1.0,
+    "max_px": 1.0,
+    "grey_mae": 3.309
+  },
+  "metrics_4x": {
+    "iou": 0.99019,
+    "mean_px": 0.0317,
+    "p95_px": 0.25,
+    "max_px": 0.25,
+    "grey_mae": 6.991
+  },
+  "pass_1x": {
+    "iou": true,
+    "mean_px": true,
+    "p95_px": false
+  },
+  "pass_4x": {
+    "iou": true,
+    "mean_px": true,
+    "p95_px": true
+  },
+  "diag_1x": {
+    "edge_px": 7538,
+    "nonzero_dev_frac": 0.0509,
+    "mismatch_px": 185,
+    "mismatch_render_cov_within_10pct_of_50": 0.978,
+    "mismatch_ref_grey_p5_p95": [
+      116.0,
+      142.0
+    ]
+  },
+  "trace_fidelity_8x_vs_threshold_mask": {
+    "iou": 0.99446,
+    "mean_px": 0.0179,
+    "p95_px": 0.125,
+    "max_px": 0.125
+  },
+  "notes": "binarised at 127.5; boundary deviation = symmetric distance between inner-edge pixels of both masks, in raster px. 1x deviations are quantised to {0,1,1.41..}; p95 hits 1.0 when >5% of edge px differ. grey_mae = mean |render-ref| grey level over the band."
+}

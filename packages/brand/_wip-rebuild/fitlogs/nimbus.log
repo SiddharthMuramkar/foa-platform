@@ -1,0 +1,2 @@
+nimbus             | A IoU 0.7486 mean 0.918 p95 2.516 | E IoU 0.7969 mean 0.749 p95 2.375 | W IoU 0.8758 mean 0.472 p95 1.250 | B IoU 0.9252 mean 0.266 p95 0.750 | 51s
+saved /private/tmp/claude-501/-Users-siddharth-Developer-foa-platform/bb023209-0394-49cb-8b5c-40cbb0b8328c/scratchpad/logo/work/fit_results_nimbus.json
