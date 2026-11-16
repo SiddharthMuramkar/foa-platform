@@ -1,0 +1,230 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/14) */
+@import "tailwindcss";
+
+/*
+  THEME MODEL
+  The prototype root carries data-theme="light" | "dark" | "system" ("system" follows prefers-color-scheme, SPEC §4.8).
+  Tokens are plain CSS variables, so ANY element can re-scope its subtree with its own data-theme
+  (e.g. a light island or light header band inside a dark page: <div data-theme="light">).
+  Prefer the token utilities (bg-canvas, bg-surface, text-ink, ...). The `dark:` variant also works: it follows the
+  nearest dark/system scope and is switched off inside any [data-theme="light"] subtree.
+
+  Contrast (WCAG 2.2 AA, measured):
+    light  ink/canvas 16.2  ink-muted/canvas 7.2  accent/canvas 6.5  white/accent 6.9  success/surface 5.6
+    dark   ink/canvas 16.4  ink-muted/canvas 8.5  ink-muted/surface 7.7  accent/canvas 8.4  accent/surface 7.5
+    donate white/#CB2322 5.5 (both themes)  donate vs canvas: light 5.2, dark 3.3; vs dark surface 3.0
+    line-strong (UI borders) light 4.3, dark 3.9 on surface
+*/
+
+:root {
+  /* Logo tile colours (exact, measured from the raster). Accents below are derived from these only. */
+  --foa-red: #cb2322;
+  --foa-green: #01ad01;
+  --foa-blue: #263ff1;
+  --palette-dark-canvas: #121417;
+  --palette-light-canvas: #faf8f4;
+}
+
+/* Tokens live in the base layer so utilities (incl. arbitrary [--token:value]) can override them. */
+@layer base {
+  [data-theme="light"],
+  [data-theme="system"] {
+    color-scheme: light;
+    --canvas: var(--palette-light-canvas); /* off-white page (SPEC §4.8) */
+    --surface: #ffffff;
+    --surface-2: #f1eee8;
+    --ink: #1b1b1f;
+    --ink-muted: #55534e;
+    --line: #e2ded6; /* decorative dividers only */
+    --line-strong: #7a766f; /* UI component borders, >= 3:1 */
+    --accent: var(--foa-blue);
+    --on-accent: #ffffff;
+    --success: #017a01;
+    --donate: var(--foa-red); /* Donate only, solid fill */
+    --on-donate: #ffffff;
+    --focus: var(--foa-blue);
+    --logo-ground: #ffffff; /* the logo's native background */
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --canvas: var(--palette-dark-canvas);
+    --surface: #1b1e23;
+    --surface-2: #252930;
+    --ink: #f3f1ec;
+    --ink-muted: #b4b0a8;
+    --line: #30343b;
+    --line-strong: #757a84;
+    --accent: #9da9ff; /* logo blue, lifted for dark */
+    --on-accent: #121417;
+    --success: #6fd86f;
+    --donate: var(--foa-red);
+    --on-donate: #ffffff;
+    --focus: #9da9ff;
+    --logo-ground: #ffffff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    [data-theme="system"] {
+      color-scheme: dark;
+      --canvas: var(--palette-dark-canvas);
+      --surface: #1b1e23;
+      --surface-2: #252930;
+      --ink: #f3f1ec;
+      --ink-muted: #b4b0a8;
+      --line: #30343b;
+      --line-strong: #757a84;
+      --accent: #9da9ff;
+      --on-accent: #121417;
+      --success: #6fd86f;
+      --donate: var(--foa-red);
+      --on-donate: #ffffff;
+      --focus: #9da9ff;
+      --logo-ground: #ffffff;
+    }
+  }
+}
+
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *):not(:where([data-theme="light"], [data-theme="light"] *)) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where([data-theme="system"], [data-theme="system"] *):not(:where([data-theme="light"], [data-theme="light"] *)) {
+      @slot;
+    }
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-donate: var(--donate);
+  --color-on-donate: var(--on-donate);
+  --color-focus: var(--focus);
+  --color-logo-ground: var(--logo-ground);
+}
+
+@theme {
+  --color-foa-red: #cb2322;
+  --color-foa-green: #01ad01;
+  --color-foa-blue: #263ff1;
+}
+
+@layer base {
+  html {
+    background: var(--palette-light-canvas);
+  }
+  /* Overscroll / rubber-band area matches the page theme. */
+  html:has(.proto-root[data-theme="dark"]) {
+    background: var(--palette-dark-canvas);
+  }
+  @media (prefers-color-scheme: dark) {
+    html:has(.proto-root[data-theme="system"]) {
+      background: var(--palette-dark-canvas);
+    }
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus, #263ff1);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced-motion safety net (NFR-A11Y); variants should still gate motion with motion-safe:/motion-reduce:. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+  FIX STAGE — scroll-driven visibility (CSS only, zero client JS: NFR-01). Durations are 1ms because Firefox needs a
+  time value to apply a scroll-driven animation; the timeline, not the clock, drives progress, so the reduced-motion
+  net above (0.01ms) changes nothing here. `animation` shorthand first, then `animation-timeline` (shorthand resets it).
+*/
+
+/* Variant B: the sticky compact bar is visibility:hidden (out of tab order and a11y tree) while the masthead covers
+   it, and visible from the moment the masthead's bottom edge passes the bar's bottom edge. No motion: a discrete flip. */
+@supports (timeline-scope: none) and (animation-timeline: view()) {
+  .b-scope {
+    timeline-scope: --b-masthead;
+  }
+  .b-masthead {
+    view-timeline: --b-masthead block;
+    view-timeline-inset: var(--b-bar-h, 4.5rem) 0;
+  }
+  .b-bar {
+    animation: b-bar-uncover 1ms linear both;
+    animation-timeline: --b-masthead;
+    animation-range: exit 99% exit 100%;
+  }
+}
+/* Without scroll-driven animations the bar can't know when it is covered: keep it hidden (the masthead keeps every
+   control) rather than expose a covered, focusable bar (WCAG 2.2 SC 2.4.11). */
+@supports not ((timeline-scope: none) and (animation-timeline: view())) {
+  .b-bar {
+    visibility: hidden;
+  }
+}
+@keyframes b-bar-uncover {
+  from {
+    visibility: hidden;
+  }
+  to {
+    visibility: visible;
+  }
+}
+
+/* Variant C: one logo above the fold. The pill's logo link is hidden while the hero logo is on screen; it fades in
+   (second half of the hero logo's exit under the pill) and only becomes focusable once at least half opaque.
+   Reduced motion: steps() makes it an instant switch at the end of the range. Unsupported browsers: always visible. */
+@supports (timeline-scope: none) and (animation-timeline: view()) {
+  .c-scope {
+    timeline-scope: --c-hero-logo;
+  }
+  .c-hero-logo {
+    view-timeline: --c-hero-logo block;
+    view-timeline-inset: var(--c-header-h, 6.5rem) 0;
+  }
+  .c-pill-logo {
+    animation: c-pill-logo-in 1ms linear both;
+    animation-timeline: --c-hero-logo;
+    animation-range: exit 0% exit 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .c-pill-logo {
+      animation-timing-function: steps(1, jump-end);
+    }
+  }
+}
+@keyframes c-pill-logo-in {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  50% {
+    visibility: hidden;
+    opacity: 0.5;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
