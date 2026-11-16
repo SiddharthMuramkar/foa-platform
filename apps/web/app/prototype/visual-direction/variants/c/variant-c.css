@@ -1,0 +1,631 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/8) */
+/*
+ * Variant C "Colour-block mosaic". Every selector is scoped to [data-variant="c"] (all variants' CSS loads on
+ * every URL). Colour custom properties (--c-*) are generated from ./tokens.ts and injected by variant-c.tsx.
+ *
+ * Shape language: square corners (the logo tiles are square-cornered), no shadows, depth from colour blocks.
+ * Gutter = the logo's tile gap: 7.4 px between ~230 px tiles ≈ 3.2 % of a tile, so ~8 px between phone tiles
+ * and ~12 px between desktop tiles; inside a split button the gap is 3 px at ~100 px cells.
+ */
+
+[data-variant="c"] {
+  --c-gap: clamp(8px, calc(0.4vw + 6px), 12px);
+  --c-gap-btn: 3px;
+  --c-section: calc(var(--c-gap) * 3.5);
+}
+
+[data-variant="c"] .c-root {
+  font-family: var(--font-c), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* Only two weights exist (400, 800): never let the browser ask for 600/700. */
+[data-variant="c"] .c-root :where(strong, b, th) {
+  font-weight: 800;
+}
+
+/* ------------------------------------------------------------------ tiles */
+
+[data-variant="c"] .c-tile {
+  position: relative;
+  isolation: isolate;
+  background: var(--tile-bg);
+  color: var(--tile-fg);
+  border-radius: 0;
+}
+[data-variant="c"] .c-t-paper {
+  --tile-bg: var(--c-paper);
+  --tile-bg-hover: var(--c-paper-2);
+  --tile-fg: var(--c-ink);
+  --tile-muted: var(--c-muted);
+  --tile-accent: var(--c-ink);
+  --tile-ring: var(--c-focus);
+}
+[data-variant="c"] .c-t-canvas {
+  --tile-bg: var(--c-canvas);
+  --tile-bg-hover: var(--c-paper);
+  --tile-fg: var(--c-ink);
+  --tile-muted: var(--c-muted);
+  --tile-accent: var(--c-ink);
+  --tile-ring: var(--c-focus);
+}
+[data-variant="c"] .c-t-plate {
+  --tile-bg: var(--c-plate);
+  --tile-bg-hover: var(--c-plate);
+  --tile-fg: var(--c-plate-ink);
+  --tile-muted: var(--c-plate-muted);
+  --tile-accent: var(--c-plate-ink);
+  --tile-ring: var(--c-plate-ink);
+}
+[data-variant="c"] .c-t-ink {
+  --tile-bg: var(--c-ink);
+  --tile-bg-hover: var(--c-ink);
+  --tile-fg: var(--c-canvas);
+  --tile-muted: var(--c-inverse-muted);
+  --tile-accent: var(--c-canvas);
+  --tile-ring: var(--c-canvas);
+}
+[data-variant="c"] .c-t-blue {
+  --tile-bg: var(--c-blue);
+  --tile-bg-hover: var(--c-blue-press);
+  --tile-fg: var(--c-on-blue);
+  --tile-muted: var(--c-on-blue-muted);
+  --tile-accent: var(--c-on-blue);
+  --tile-ring: var(--c-on-blue);
+}
+[data-variant="c"] .c-t-green {
+  --tile-bg: var(--c-green);
+  --tile-bg-hover: var(--c-green-press);
+  --tile-fg: var(--c-on-green);
+  --tile-muted: var(--c-on-green);
+  --tile-accent: var(--c-on-green);
+  --tile-ring: var(--c-on-green);
+}
+/* Solid red: Donate only. */
+[data-variant="c"] .c-t-red {
+  --tile-bg: var(--c-red);
+  --tile-bg-hover: var(--c-red-press);
+  --tile-fg: var(--c-on-red);
+  --tile-muted: var(--c-on-red);
+  --tile-accent: var(--c-on-red);
+  --tile-ring: var(--c-on-red);
+}
+[data-variant="c"] .c-t-blue-tint {
+  --tile-bg: var(--c-blue-tint);
+  --tile-bg-hover: var(--c-blue-tint-2);
+  --tile-fg: var(--c-ink);
+  --tile-muted: var(--c-muted);
+  --tile-accent: var(--c-blue-text);
+  --tile-ring: var(--c-focus);
+}
+[data-variant="c"] .c-t-green-tint {
+  --tile-bg: var(--c-green-tint);
+  --tile-bg-hover: var(--c-green-tint-2);
+  --tile-fg: var(--c-ink);
+  --tile-muted: var(--c-muted);
+  --tile-accent: var(--c-green-text);
+  --tile-ring: var(--c-focus);
+}
+[data-variant="c"] .c-t-red-tint {
+  --tile-bg: var(--c-red-tint);
+  --tile-bg-hover: var(--c-red-tint);
+  --tile-fg: var(--c-ink);
+  --tile-muted: var(--c-muted);
+  --tile-accent: var(--c-red-text);
+  --tile-ring: var(--c-focus);
+}
+[data-variant="c"] .c-muted {
+  color: var(--tile-muted, var(--c-muted));
+}
+[data-variant="c"] .c-accent {
+  color: var(--tile-accent, var(--c-ink));
+}
+
+/* A tile that IS a link, or that contains one stretched link (card pattern). */
+[data-variant="c"] .c-link-tile {
+  text-decoration: none;
+  transition: background-color 160ms ease;
+}
+[data-variant="c"] .c-link-tile:hover,
+[data-variant="c"] .c-tile:has(.c-stretch:hover) {
+  background: var(--tile-bg-hover);
+}
+[data-variant="c"] .c-stretch {
+  text-decoration: none;
+  color: inherit;
+}
+[data-variant="c"] .c-stretch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+[data-variant="c"] .c-above {
+  position: relative;
+  z-index: 2;
+}
+
+/* The arrow cell: a small square tile inside the tile, in the tile's accent colour. */
+[data-variant="c"] .c-arrow {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--tile-accent, var(--c-ink));
+  color: var(--tile-bg, var(--c-canvas));
+}
+[data-variant="c"] .c-arrow svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+@media (min-width: 1024px) {
+  [data-variant="c"] .c-arrow--lg {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+  [data-variant="c"] .c-arrow--lg svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* Small solid squares used as section markers (echo of the three logo tiles). Red is only ever a rule here. */
+[data-variant="c"] .c-sq {
+  display: inline-block;
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: var(--sq, currentColor);
+}
+[data-variant="c"] .c-sq--red-rule {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--c-red-text);
+}
+[data-variant="c"] .c-tri {
+  display: inline-flex;
+  flex: none;
+  gap: 3px;
+  padding: 3px;
+  background: var(--c-plate);
+}
+/* On the white plate the rule is the logo red itself (a 2 px rule, not a fill). */
+[data-variant="c"] .c-tri .c-sq--red-rule {
+  box-shadow: inset 0 0 0 2px var(--c-red);
+}
+
+/* ------------------------------------------------------------------ focus (NFR-A11Y: always visible) */
+
+[data-variant="c"] .c-root :focus-visible {
+  outline: 3px solid var(--tile-ring, var(--c-focus));
+  outline-offset: 2px;
+}
+/* A whole tile in focus: the ring sits in the gutter, so it uses the page focus colour, not the tile's. */
+[data-variant="c"] .c-root .c-tile:focus-visible,
+[data-variant="c"] .c-root .c-tile:has(.c-stretch:focus-visible) {
+  outline: 3px solid var(--c-focus);
+  outline-offset: 3px;
+}
+[data-variant="c"] .c-root .c-stretch:focus-visible {
+  outline: none;
+}
+
+[data-variant="c"] .c-skip {
+  position: absolute;
+  left: 16px;
+  top: -200px;
+  z-index: 50;
+  padding: 12px 16px;
+  background: var(--c-ink);
+  color: var(--c-canvas);
+  font-weight: 800;
+}
+[data-variant="c"] .c-skip:focus {
+  top: 12px;
+}
+
+/* ------------------------------------------------------------------ split-tile buttons */
+/* Label cell + 3 px gap + icon cell: a button built like the logo (blocks separated by a white gap). */
+
+[data-variant="c"] .c-btn {
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--c-gap-btn);
+  min-height: 48px;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+[data-variant="c"] .c-btn > span {
+  display: flex;
+  align-items: center;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  transition: background-color 160ms ease;
+}
+[data-variant="c"] .c-btn__label {
+  padding: 0.75rem 1.125rem;
+}
+[data-variant="c"] .c-btn__icon {
+  justify-content: center;
+  width: 48px;
+}
+[data-variant="c"] .c-btn__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+[data-variant="c"] .c-btn:hover > span {
+  background: var(--btn-bg-hover);
+}
+[data-variant="c"] .c-btn--primary {
+  --btn-bg: var(--c-green);
+  --btn-bg-hover: var(--c-green-press);
+  --btn-fg: var(--c-on-green);
+}
+[data-variant="c"] .c-btn--donate {
+  --btn-bg: var(--c-red);
+  --btn-bg-hover: var(--c-red-press);
+  --btn-fg: var(--c-on-red);
+}
+/* Secondary adapts to the tile it sits on: outlined label in the tile's text colour, solid icon cell. */
+[data-variant="c"] .c-btn--secondary {
+  --btn-bg: transparent;
+  --btn-bg-hover: var(--tile-bg-hover, var(--c-paper));
+  --btn-fg: var(--tile-fg, var(--c-ink));
+}
+[data-variant="c"] .c-btn--secondary .c-btn__label {
+  box-shadow: inset 0 0 0 2px var(--tile-fg, var(--c-ink));
+}
+[data-variant="c"] .c-btn--secondary .c-btn__icon,
+[data-variant="c"] .c-btn--secondary:hover .c-btn__icon {
+  background: var(--tile-fg, var(--c-ink));
+  color: var(--tile-bg, var(--c-canvas));
+}
+[data-variant="c"] .c-btn--sm {
+  min-height: 44px;
+  font-size: 0.9375rem;
+}
+[data-variant="c"] .c-btn--sm .c-btn__icon {
+  width: 44px;
+}
+
+/* Text link inside copy */
+[data-variant="c"] .c-link {
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+[data-variant="c"] .c-link:hover {
+  text-decoration-thickness: 4px;
+}
+[data-variant="c"] .c-report {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--tile-muted, var(--c-muted));
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+}
+
+/* ------------------------------------------------------------------ badges */
+
+[data-variant="c"] .c-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 6px;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-weight: 800;
+  background: var(--badge-bg, var(--c-canvas));
+  color: var(--badge-fg, var(--c-ink));
+  white-space: nowrap;
+}
+[data-variant="c"] .c-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: none;
+  background: var(--badge-dot, currentColor);
+}
+[data-variant="c"] .c-badge--green {
+  --badge-bg: var(--c-green-tint);
+  --badge-fg: var(--c-ink);
+  --badge-dot: var(--c-green-text);
+}
+[data-variant="c"] .c-badge--blue {
+  --badge-bg: var(--c-blue-tint);
+  --badge-fg: var(--c-ink);
+  --badge-dot: var(--c-blue-text);
+}
+[data-variant="c"] .c-badge--neutral {
+  --badge-bg: var(--c-canvas);
+  --badge-fg: var(--c-ink);
+  --badge-dot: var(--c-muted);
+}
+[data-variant="c"] .c-badge--award {
+  --badge-bg: var(--c-ink);
+  --badge-fg: var(--c-canvas);
+  --badge-dot: var(--c-canvas);
+}
+[data-variant="c"] .c-badge--placeholder {
+  --badge-bg: transparent;
+  --badge-fg: var(--tile-fg, var(--c-ink));
+  --badge-dot: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--c-field);
+}
+[data-variant="c"] .c-badge--placeholder::before {
+  box-shadow: inset 0 0 0 1.5px var(--c-field);
+}
+[data-variant="c"] .c-chip-photo {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  z-index: 2;
+  padding: 3px 7px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  font-weight: 800;
+  background: var(--c-plate);
+  color: var(--c-plate-ink);
+}
+
+/* ------------------------------------------------------------------ form controls */
+
+[data-variant="c"] .c-label {
+  display: block;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  font-weight: 800;
+}
+[data-variant="c"] .c-hint {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--tile-muted, var(--c-muted));
+}
+[data-variant="c"] .c-field {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 1rem;
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  border: 2px solid var(--c-field);
+  border-radius: 0;
+  appearance: none;
+}
+[data-variant="c"] .c-field::placeholder {
+  color: var(--c-muted);
+  opacity: 1;
+}
+[data-variant="c"] .c-field:hover {
+  border-color: var(--c-ink);
+}
+[data-variant="c"] .c-field:focus-visible {
+  border-color: var(--c-ink);
+  outline-color: var(--c-blue-text);
+}
+/* Error: thin red rule + red tint + text and icon, never colour alone. */
+[data-variant="c"] .c-field[aria-invalid="true"] {
+  border-color: var(--c-red-text);
+  background: var(--c-red-tint);
+  box-shadow: inset 6px 0 0 var(--c-red-text);
+  padding-left: 20px;
+}
+[data-variant="c"] .c-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 800;
+  color: var(--c-red-text);
+}
+[data-variant="c"] .c-error__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  font-size: 0.75rem;
+  line-height: 1;
+  box-shadow: inset 0 0 0 2px var(--c-red-text);
+}
+
+/* Donation presets: native radios restyled as tiles (no JS). */
+[data-variant="c"] .c-amount {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  font-weight: 800;
+  font-size: 1.0625rem;
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  box-shadow: inset 0 0 0 2px var(--c-field);
+  cursor: pointer;
+}
+[data-variant="c"] .c-amount input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+[data-variant="c"] .c-amount__tick {
+  display: none;
+  width: 18px;
+  height: 18px;
+}
+[data-variant="c"] .c-amount:hover {
+  box-shadow: inset 0 0 0 2px var(--c-ink);
+}
+[data-variant="c"] .c-amount:has(input:checked) {
+  box-shadow: inset 0 0 0 4px var(--c-ink);
+}
+[data-variant="c"] .c-amount:has(input:checked) .c-amount__tick {
+  display: block;
+}
+[data-variant="c"] .c-amount:has(input:focus-visible) {
+  outline: 3px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ tabs (client island) */
+
+[data-variant="c"] .c-tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--c-gap-btn);
+}
+[data-variant="c"] .c-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+[data-variant="c"] .c-tab:hover {
+  background: var(--c-paper-2);
+}
+[data-variant="c"] .c-tab[aria-selected="true"] {
+  background: var(--c-blue);
+  color: var(--c-on-blue);
+  font-weight: 800;
+  --tile-ring: var(--c-focus);
+}
+/* Non-colour cue for the selected tab: a solid square marker. */
+[data-variant="c"] .c-tab::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+[data-variant="c"] .c-tab[aria-selected="true"]::before {
+  background: currentColor;
+}
+[data-variant="c"] .c-tabpanel {
+  margin-top: var(--c-gap-btn);
+  padding: 16px;
+  background: var(--c-canvas);
+  min-height: 112px;
+}
+
+/* ------------------------------------------------------------------ mobile menu (<details>, no JS) */
+
+[data-variant="c"] .c-menu > summary {
+  list-style: none;
+  cursor: pointer;
+}
+[data-variant="c"] .c-menu > summary::-webkit-details-marker {
+  display: none;
+}
+[data-variant="c"] .c-menu[open] .c-menu__open {
+  display: none;
+}
+[data-variant="c"] .c-menu:not([open]) .c-menu__close {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ photos and Artwork mats */
+
+[data-variant="c"] .c-photo {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-paper-2);
+}
+[data-variant="c"] .c-photo img {
+  object-fit: cover;
+}
+/* Artworks are never cropped: contained on a mat inside a square cell. */
+[data-variant="c"] .c-mat {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--c-mat);
+}
+[data-variant="c"] .c-mat__inner {
+  position: absolute;
+  inset: var(--mat-pad, 9%);
+}
+[data-variant="c"] .c-mat img {
+  object-fit: contain;
+}
+
+/* ------------------------------------------------------------------ motion (designed reduced state = static) */
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-variant="c"] .c-arrow svg,
+  [data-variant="c"] .c-btn__icon svg {
+    transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  [data-variant="c"] .c-link-tile:hover .c-arrow svg,
+  [data-variant="c"] .c-tile:has(.c-stretch:hover) .c-arrow svg,
+  [data-variant="c"] .c-btn:hover .c-btn__icon svg {
+    transform: translateX(3px);
+  }
+  [data-variant="c"] .c-photo img {
+    transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  [data-variant="c"] .c-tile:has(.c-stretch:hover) .c-photo img {
+    transform: scale(1.04);
+  }
+  /* Action tiles slot into the mosaic on load (transform only: content is never hidden, LCP unaffected). */
+  [data-variant="c"] .c-rise {
+    animation: c-rise 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 120ms);
+  }
+  [data-variant="c"] .c-pop {
+    animation: c-pop 600ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 200ms);
+  }
+}
+@keyframes c-rise {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes c-pop {
+  from {
+    transform: scale(0.4);
+  }
+  to {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-variant="c"] .c-rise,
+  [data-variant="c"] .c-pop {
+    animation: none;
+  }
+}

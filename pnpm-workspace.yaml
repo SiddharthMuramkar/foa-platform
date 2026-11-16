@@ -1,0 +1,8 @@
+# PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/8)
+packages:
+  - apps/*
+
+# Carried over from create-next-app 16.4.6: sharp and unrs-resolver ship prebuilt binaries, no install scripts needed.
+allowBuilds:
+  sharp: false
+  unrs-resolver: false

@@ -1,0 +1,9 @@
+{
+  "//": "PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/8)",
+  "name": "foa-platform",
+  "private": true,
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "visual-direction": "pnpm --dir apps/web dev --port 3108"
+  }
+}

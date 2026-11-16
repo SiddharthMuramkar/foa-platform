@@ -1,0 +1,115 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/8) */
+/*
+ * Variant B "Editorial trust": component styles that utilities can't express neatly.
+ * Every selector is scoped to [data-variant="b"]; colour tokens come from tokens.ts (--b-*).
+ * Motion is opt-in: it only exists inside `prefers-reduced-motion: no-preference`.
+ */
+
+[data-variant="b"] .b-root {
+  font-family: var(--font-b-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Only 400 + 600 are loaded (NFR-01): never let the browser fake a bold or italic. */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+[data-variant="b"] .b-root :focus-visible {
+  outline: 2px solid var(--b-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+[data-variant="b"] .b-footer :focus-visible {
+  outline-color: var(--b-footer-link);
+}
+/* Static copy of the focus ring for the component sampler. */
+[data-variant="b"] .b-focus-demo {
+  outline: 2px solid var(--b-focus);
+  outline-offset: 3px;
+}
+
+[data-variant="b"] .b-num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Passe-partout frame: hairline edge + soft "gallery light" shadow. Square corners: it is an object, not UI. */
+[data-variant="b"] .b-frame {
+  background: var(--b-mat);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--b-shadow) 9%, transparent),
+    0 1px 2px color-mix(in srgb, var(--b-shadow) 6%, transparent),
+    0 22px 44px -22px color-mix(in srgb, var(--b-shadow) 38%, transparent);
+}
+[data-variant="b"] .b-frame-inner {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--b-shadow) 8%, transparent);
+}
+
+[data-variant="b"] .b-strip {
+  scrollbar-width: thin;
+  scrollbar-color: var(--b-control) transparent;
+}
+
+[data-variant="b"] .b-menu > summary {
+  list-style: none;
+}
+[data-variant="b"] .b-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The featured Artwork settles onto the wall (transform only: the LCP element is never hidden). */
+  [data-variant="b"] .b-hang {
+    animation: b-hang 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  [data-variant="b"] .b-label-in {
+    animation: b-fade-up 700ms 280ms ease-out both;
+  }
+  [data-variant="b"] .b-lift {
+    transition:
+      transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 320ms ease-out;
+  }
+  [data-variant="b"] a:hover > .b-lift,
+  [data-variant="b"] a:focus-visible > .b-lift {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--b-shadow) 9%, transparent),
+      0 2px 4px color-mix(in srgb, var(--b-shadow) 6%, transparent),
+      0 30px 50px -24px color-mix(in srgb, var(--b-shadow) 45%, transparent);
+  }
+  [data-variant="b"] .b-arrow {
+    display: inline-block;
+    transition: transform 200ms ease-out;
+  }
+  [data-variant="b"] a:hover .b-arrow,
+  [data-variant="b"] a:focus-visible .b-arrow {
+    transform: translateX(3px);
+  }
+  [data-variant="b"] .b-ease {
+    transition:
+      background-color 160ms ease-out,
+      color 160ms ease-out,
+      border-color 160ms ease-out,
+      text-decoration-color 160ms ease-out;
+  }
+  [data-variant="b"] .b-strip {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes b-hang {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes b-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

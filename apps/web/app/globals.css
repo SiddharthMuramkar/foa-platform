@@ -1,0 +1,52 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/8) */
+@import "tailwindcss";
+
+/*
+ * Theme switching. The prototype page wraps each variant in
+ *   <div data-theme="light|dark|system" data-variant="a|b|c">
+ * `system` (the default) follows prefers-color-scheme; `?theme=light|dark` forces one for screenshots.
+ * `dark:` utilities honour both.
+ */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where([data-theme="system"], [data-theme="system"] *) {
+      @slot;
+    }
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+html:has([data-theme="light"]) {
+  color-scheme: light;
+}
+html:has([data-theme="dark"]) {
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  background: Canvas;
+  color: CanvasText;
+}
+
+/* Safety net only: variants must still design their own reduced-motion behaviour (NFR-A11Y). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
