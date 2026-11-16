@@ -1,0 +1,394 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/9) */
+/*
+ * Variant B "Tile cascade". CSS-first per research/lean-motion-stack (#4): no animation library.
+ *
+ * Layering: each logo instance is a stack of HTML <span> layers, each holding one inline copy of the
+ * UNCHANGED logo SVG with every group except its own hidden (red = tile-red + letter-f, green =
+ * tile-green + letter-o, mark, blue = tile-blue + letter-a, word = wordmark). At rest the stack composites
+ * back to the exact logo. Motion is applied to the HTML layers (transform/opacity only), so every moving
+ * part is its own compositor layer, not an SVG <g> that would be repainted per frame.
+ *
+ * Motion map
+ *   hero  : scroll-linked (CSS view timeline on the hero logo). Over the FIRST ≈ 35 % of the logo's height
+ *           of scroll, while the logo is still (almost) fully visible below the header, the tiles part
+ *           sideways in a red → green → blue cascade (±5 % X, ≤ 4 % Y). The wordmark and the dark-mode
+ *           plate never fade. The timeline's start inset is the logo's resting top (header + hero padding),
+ *           so "exit 0%" = scroll 0 at every width; nothing plays out under the opaque header.
+ *           Fallback (no scroll-driven animations: iOS 16–18, Firefox ≤ 158): same end state, time-based,
+ *           toggled by the IntersectionObserver island's data-b-docked.
+ *   header: time-based "click": when ≥ 35% of the hero logo is under the header (IO island, DOCK_RATIO
+ *           0.65 visible), i.e. right after the hero tiles have parted and while most of the hero logo is
+ *           still on screen, so there is never a frame without a whole-reading logo. The compact
+ *           logo's tiles rise in from below, staggered, and snap together with a small overshoot, then the
+ *           wordmark fades in. Never scroll-scrubbed, so the header logo is never left half-assembled.
+ *           No JS (scripting: none): the header logo simply sits there, assembled and static.
+ *   paw   : small wag (rotation about the disc centre, so the green disc never uncovers the O's ring) on
+ *           hover (hover-capable pointers), keyboard focus of the home link, and tap/click (island).
+ *   reduced motion: hero static; header logo fades in as a whole (150 ms opacity, IO-switched); no wag.
+ */
+
+/* ---------- Structure ---------- */
+
+.root {
+  /* Host for data-b-docked / data-b-wag-run (set by tile-cascade-root.tsx). No overflow here: it would
+     break position: sticky and the view timeline. */
+  display: block;
+}
+
+.hero {
+  /* Resting top padding of the hero logo (= the pt-6 / md:pt-12 on the hero container): the view timeline's
+     start inset, so the drift runs from scroll 0. */
+  --b-hero-pt: 1.5rem;
+  /* Tiles fan out a few % beyond the logo box: clip (not hidden: hidden makes a scroller and breaks the
+     view timeline) the horizontal axis only, at the viewport edges. Vertical stays visible so tiles can
+     slide up under the sticky header. */
+  overflow-x: clip;
+}
+
+@media (min-width: 48rem) {
+  .hero {
+    --b-hero-pt: 3rem;
+  }
+}
+
+.heroLogo {
+  position: relative;
+}
+
+.heroPlate,
+.headerPlate {
+  position: absolute;
+  background: var(--logo-plate); /* transparent in light, white in dark (black wordmark) */
+}
+
+.heroPlate {
+  inset: -0.75rem;
+  border-radius: 1rem;
+}
+
+.headerPlate {
+  inset: 0;
+  border-radius: 0.25rem;
+}
+
+.stack {
+  position: relative;
+  display: block;
+}
+
+.flow {
+  /* First layer stays in flow: the stack takes the SVG's own aspect ratio from its viewBox (CLS 0). */
+  position: relative;
+  display: block;
+}
+
+.over {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.art {
+  display: block;
+}
+
+/* Each layer shows only its own groups of the unchanged SVG. */
+.art
+  :is(
+    [data-part="tile-red"],
+    [data-part="tile-green"],
+    [data-part="tile-blue"],
+    [data-part="letter-f"],
+    [data-part="letter-o"],
+    [data-part="letter-a"],
+    [data-part="mark"],
+    [data-part="wordmark"]
+  ) {
+  display: none;
+}
+
+.showRed :is([data-part="tile-red"], [data-part="letter-f"]),
+.showGreen :is([data-part="tile-green"], [data-part="letter-o"]),
+.showMark [data-part="mark"],
+.showBlue :is([data-part="tile-blue"], [data-part="letter-a"]),
+.showWord [data-part="wordmark"] {
+  display: inline;
+}
+
+.markHover,
+.markTap {
+  /* Centre of the paw's green disc (from LOGO_PART_BOXES.mark, set inline on the stack). */
+  transform-origin: var(--b-mark-origin, 49.34% 56.82%);
+}
+
+.headerLogo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Header slot is 40px tall on phones: grow the link's hit area to 48px without moving anything. */
+.headerLogo::after {
+  content: "";
+  position: absolute;
+  inset: -0.25rem -0.125rem;
+}
+
+/* ---------- Hero: scroll-linked cascade (scroll-driven animations) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) and (view-timeline-name: --b-hero) {
+    .heroLogo {
+      view-timeline-name: --b-hero;
+      view-timeline-axis: block;
+      /* Start inset = the logo's resting top, so "exit 0%" is scroll 0 and "exit N%" is N % of the logo's
+         height scrolled. The drift finishes by exit 34 %, i.e. before the header logo assembles (≈ exit
+         35 % + hero padding) and while the hero logo is at most ≈ 25 % under the header. */
+      view-timeline-inset: calc(var(--header-h) + var(--b-hero-pt)) 0px;
+    }
+
+    .heroLogo .layerRed,
+    .heroLogo .layerGreen,
+    .heroLogo .layerBlue {
+      animation-duration: 1ms; /* Firefox needs a non-auto duration */
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --b-hero; /* after the other animation-* longhands */
+    }
+
+    .heroLogo .layerRed {
+      animation-name: b-drift-red;
+      animation-range: exit 0% exit 22%;
+    }
+
+    .heroLogo .layerGreen {
+      animation-name: b-drift-green;
+      animation-range: exit 6% exit 28%;
+    }
+
+    .heroLogo .layerBlue {
+      animation-name: b-drift-blue;
+      animation-range: exit 12% exit 34%;
+    }
+  }
+
+  /* Fallback: no scroll-driven animations → same end state, time-based, on the IO dock toggle. */
+  @supports not ((animation-timeline: view()) and (view-timeline-name: --b-hero)) {
+    .heroLogo .layerRed,
+    .heroLogo .layerGreen,
+    .heroLogo .layerBlue {
+      transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .root[data-b-docked="true"] .heroLogo .layerRed {
+      transform: translate3d(-5%, -2%, 0);
+    }
+
+    .root[data-b-docked="true"] .heroLogo .layerGreen {
+      transform: translate3d(0, -4%, 0);
+      transition-delay: 50ms;
+    }
+
+    .root[data-b-docked="true"] .heroLogo .layerBlue {
+      transform: translate3d(5%, -2%, 0);
+      transition-delay: 100ms;
+    }
+  }
+}
+
+/* Mostly sideways (percent of the logo box): red left, blue right, green lifts a touch off the wordmark.
+   The gaps only ever widen, so tiles never overlap; the tiles never cross the wordmark (4.5 % gap). */
+@keyframes b-drift-red {
+  to {
+    transform: translate3d(-5%, -2%, 0);
+  }
+}
+
+@keyframes b-drift-green {
+  to {
+    transform: translate3d(0, -4%, 0);
+  }
+}
+
+@keyframes b-drift-blue {
+  to {
+    transform: translate3d(5%, -2%, 0);
+  }
+}
+
+/* ---------- Header: tiles click together when the hero logo has gone (needs the IO island) ---------- */
+
+@media (scripting: enabled) and (prefers-reduced-motion: reduce) {
+  .headerLogo {
+    opacity: 0;
+    transition: opacity 150ms linear;
+  }
+
+  .root[data-b-docked="true"] .headerLogo,
+  [data-header-logo-slot]:focus-visible .headerLogo {
+    opacity: 1;
+  }
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  /*
+   * Undocked: tiles parked below the slot, fanned out, invisible. Leaving = quick drop, blue first.
+   * Sideways offset uses the `translate` property (ease-out, never overshoots, so tiles can never cross
+   * each other); the vertical rise uses `transform` (overshoot = the click). Both are compositor-only.
+   */
+  .headerLogo .layerRed,
+  .headerLogo .layerGreen,
+  .headerLogo .layerBlue {
+    opacity: 0;
+    transform: translate3d(0, 60%, 0);
+    transition:
+      translate 160ms cubic-bezier(0.4, 0, 1, 1),
+      transform 160ms cubic-bezier(0.4, 0, 1, 1),
+      opacity 120ms linear;
+  }
+
+  .headerLogo .layerRed {
+    translate: -14% 0;
+    transition-delay: 60ms;
+  }
+
+  .headerLogo .layerGreen {
+    transition-delay: 30ms;
+  }
+
+  .headerLogo .layerBlue {
+    translate: 14% 0;
+    transition-delay: 0ms;
+  }
+
+  .headerLogo .layerWord,
+  .headerLogo .headerPlate {
+    opacity: 0;
+    transition: opacity 120ms linear;
+  }
+
+  /* Docked: rise and snap together red → green → blue (overshoot = the "click"), then the wordmark. */
+  .root[data-b-docked="true"] .headerLogo .layerRed,
+  .root[data-b-docked="true"] .headerLogo .layerGreen,
+  .root[data-b-docked="true"] .headerLogo .layerBlue,
+  [data-header-logo-slot]:focus-visible .headerLogo .layerRed,
+  [data-header-logo-slot]:focus-visible .headerLogo .layerGreen,
+  [data-header-logo-slot]:focus-visible .headerLogo .layerBlue {
+    opacity: 1;
+    transform: none;
+    transition:
+      translate 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 120ms linear;
+  }
+
+  /* Own rule on purpose: lightningcss (Turbopack's CSS pipeline) folds `translate` into `transform` when
+     both are declared in one rule, which drops `translate: none` and leaves the tiles fanned out. */
+  .root[data-b-docked="true"] .headerLogo :is(.layerRed, .layerBlue),
+  [data-header-logo-slot]:focus-visible .headerLogo :is(.layerRed, .layerBlue) {
+    translate: none;
+  }
+
+  .root[data-b-docked="true"] .headerLogo .layerGreen,
+  [data-header-logo-slot]:focus-visible .headerLogo .layerGreen {
+    transition-delay: 70ms;
+  }
+
+  .root[data-b-docked="true"] .headerLogo .layerBlue,
+  [data-header-logo-slot]:focus-visible .headerLogo .layerBlue {
+    transition-delay: 140ms;
+  }
+
+  .root[data-b-docked="true"] .headerLogo .headerPlate,
+  [data-header-logo-slot]:focus-visible .headerLogo .headerPlate {
+    opacity: 1;
+  }
+
+  .root[data-b-docked="true"] .headerLogo .layerWord,
+  [data-header-logo-slot]:focus-visible .headerLogo .layerWord {
+    opacity: 1;
+    transition: opacity 180ms linear 300ms;
+  }
+}
+
+/* ---------- Paw wag (hover / focus / tap) ---------- */
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .heroLogo:hover .markHover,
+  [data-header-logo-slot]:hover .markHover {
+    animation: b-wag 560ms ease-in-out;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-header-logo-slot]:focus-visible .markHover {
+    animation: b-wag 560ms ease-in-out;
+  }
+
+  /* Tap/click (island toggles a/b so a second tap restarts the wag without a forced reflow). */
+  [data-b-wag-run="a"] .markTap {
+    animation: b-wag-a 560ms ease-in-out;
+  }
+
+  [data-b-wag-run="b"] .markTap {
+    animation: b-wag-b 560ms ease-in-out;
+  }
+}
+
+@keyframes b-wag {
+  0%,
+  100% {
+    transform: none;
+  }
+  18% {
+    transform: rotate(-12deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  62% {
+    transform: rotate(-6deg);
+  }
+  82% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes b-wag-a {
+  0%,
+  100% {
+    transform: none;
+  }
+  18% {
+    transform: rotate(-12deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  62% {
+    transform: rotate(-6deg);
+  }
+  82% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes b-wag-b {
+  0%,
+  100% {
+    transform: none;
+  }
+  18% {
+    transform: rotate(-12deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  62% {
+    transform: rotate(-6deg);
+  }
+  82% {
+    transform: rotate(3deg);
+  }
+}

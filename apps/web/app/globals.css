@@ -1,0 +1,110 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/9) */
+@import "tailwindcss";
+
+/*
+ * Neutral tokens (visual direction #8 not chosen yet). Contrast, WCAG 2.2 AA:
+ *   light: ink #1C1A17 on surface #FAF8F4 ≈ 16:1; ink-muted #57534E ≈ 7.3:1; primary #0055A5 ≈ 6.9:1
+ *   dark:  ink #F3F1EC on surface #121110 ≈ 17:1; ink-muted #B5AFA6 ≈ 8.6:1; primary #8AB8F2 ≈ 8.9:1
+ *   donate: white on #E52421 ≈ 4.56:1 (both themes); #E52421 vs dark surface ≈ 4.1:1 (UI ≥ 3:1)
+ * Theme: follows prefers-color-scheme; [data-theme="light"|"dark"] on any ancestor forces it
+ * (the route sets it on its wrapper from ?theme=; :has() lifts it to :root so <body> matches).
+ */
+:root {
+  color-scheme: light;
+  --surface: #faf8f4;
+  --surface-2: #ffffff;
+  --ink: #1c1a17;
+  --ink-muted: #57534e;
+  --line: #e4dfd6;
+  --block: #d9d4cb;
+  --primary: #0055a5;
+  --on-primary: #ffffff;
+  --donate: #e52421; /* solid red fill: Donate only (SPEC §4.8) */
+  --on-donate: #ffffff;
+  --logo-plate: transparent; /* the logo's black wordmark needs a light plate in dark mode */
+  --switcher-bg: #111111;
+  --switcher-fg: #ffffff;
+  --header-h: 4rem; /* reserved sticky-header height (CLS 0) */
+  --header-logo-h: 2.5rem; /* compact logo height inside the header slot */
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --header-h: 4.5rem;
+    --header-logo-h: 3rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(:has([data-theme="light"])) {
+    color-scheme: dark;
+    --surface: #121110;
+    --surface-2: #1c1b19;
+    --ink: #f3f1ec;
+    --ink-muted: #b5afa6;
+    --line: #2e2c29;
+    --block: #3a3733;
+    --primary: #8ab8f2;
+    --on-primary: #0b1a2c;
+    --logo-plate: #ffffff;
+  }
+}
+
+:root:has([data-theme="dark"]),
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #121110;
+  --surface-2: #1c1b19;
+  --ink: #f3f1ec;
+  --ink-muted: #b5afa6;
+  --line: #2e2c29;
+  --block: #3a3733;
+  --primary: #8ab8f2;
+  --on-primary: #0b1a2c;
+  --logo-plate: #ffffff;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --surface: #faf8f4;
+  --surface-2: #ffffff;
+  --ink: #1c1a17;
+  --ink-muted: #57534e;
+  --line: #e4dfd6;
+  --block: #d9d4cb;
+  --primary: #0055a5;
+  --on-primary: #ffffff;
+  --logo-plate: transparent;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-block: var(--block);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-donate: var(--donate);
+  --color-on-donate: var(--on-donate);
+  --color-logo-plate: var(--logo-plate);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --spacing-header: var(--header-h);
+  --spacing-header-logo: var(--header-logo-h);
+}
+
+html {
+  background: var(--surface);
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}

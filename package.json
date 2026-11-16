@@ -1,0 +1,8 @@
+{
+  "name": "foa-platform",
+  "private": true,
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "logo-scroll": "pnpm --dir apps/web exec next dev -p 3109"
+  }
+}

@@ -1,0 +1,250 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/9) */
+/*
+ * Variant C "Paw lead". CSS-first per research/lean-motion-stack: no animation library.
+ * Only transform and opacity animate. Every movement sits inside
+ * @media (prefers-reduced-motion: no-preference); the un-gated rules ARE the reduced-motion version.
+ *
+ * Paw layering (see paw-logo.tsx): the base logo hides its `mark` group; a second copy shows only
+ * `mark` on its own HTML layers (window > wave > bounce > paw), so the paw moves on the compositor,
+ * not by repainting the SVG. The paw only moves INSIDE the hole of the O: `.window` is a static
+ * clip to that hole, so the white ring is never overdrawn and nothing crosses the tile.
+ * Geometry custom properties (--c-*) are set inline from LOGO_PART_BOXES.mark.
+ */
+
+/* ---------- Logo stack ---------- */
+
+.logo {
+  position: relative;
+  display: block;
+}
+
+.base {
+  display: block;
+}
+
+/* Base copy: everything except the paw-and-hands mark (the O's hole shows the green tile beneath). */
+.base :global([data-part="mark"]) {
+  visibility: hidden;
+}
+
+.window,
+.wave,
+.bounce {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* Static porthole: the hole of the O. Moving content outside it is clipped. */
+.window {
+  clip-path: ellipse(var(--c-win-rx) var(--c-win-ry) at var(--c-cx) var(--c-cy));
+}
+
+/* Wave rocks about the disc centre; bounce lifts and lands (uniform scale) about the disc bottom. */
+.wave {
+  transform-origin: var(--c-cx) var(--c-cy);
+}
+
+.bounce {
+  transform-origin: var(--c-cx) var(--c-bottom);
+}
+
+/* Moving copy: only the mark, trimmed just inside the hole so the ring's inner edge never travels. */
+.paw {
+  display: block;
+  clip-path: ellipse(var(--c-paw-rx) var(--c-paw-ry) at var(--c-cx) var(--c-cy));
+}
+
+.paw :global(svg > :not(defs)) {
+  visibility: hidden;
+}
+
+.paw :global([data-part="mark"]) {
+  visibility: visible;
+}
+
+/* Hit area over the paw (pointer only, decorative: never the only way to do anything). ≥ 44×44 px. */
+.hit {
+  position: absolute;
+  z-index: 1;
+  left: var(--c-cx);
+  top: var(--c-cy);
+  width: max(44px, calc(var(--c-win-rx) * 2));
+  height: max(44px, calc(var(--c-win-ry) * 2));
+  translate: -50% -50%;
+  border-radius: 9999px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Compact header logo (appears once the hero logo has left the viewport) ---------- */
+
+/* Reduced-motion baseline: opacity only. */
+.compact {
+  opacity: 0;
+  transition: opacity 150ms linear;
+}
+
+.root[data-c-hero="out"] .compact,
+:global([data-header-logo-slot]:focus-visible) .compact {
+  opacity: 1;
+}
+
+/* ---------- Motion (only when the user has not asked for less) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Header logo rises into the slot from just below, as if the hero logo had floated up into it. */
+  .compact {
+    transform: translateY(22%);
+    transition:
+      opacity 160ms ease-in,
+      transform 160ms ease-in;
+  }
+
+  .root[data-c-hero="out"] .compact,
+  :global([data-header-logo-slot]:focus-visible) .compact {
+    transform: none;
+    transition:
+      opacity 220ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  /* One-off wave on first load (hero only). Runs once, about 1.3 s: no loop (WCAG 2.2.2). */
+  .waveOnLoad .wave {
+    animation: paw-wave 1300ms cubic-bezier(0.45, 0, 0.55, 1) 500ms 1 both;
+  }
+
+  /* First arrival in the header: one small nod after the logo lands. data-c-nod is never removed,
+     so this runs once per page view. Lives on .wave so hover (on .bounce) cannot retrigger it. */
+  .root[data-c-nod] .nodOnArrival .wave {
+    transform-origin: var(--c-cx) var(--c-bottom);
+    animation: paw-bounce 560ms 260ms 1 both;
+  }
+
+  /* Keyboard focus on the header home link: the paw says hello once. */
+  :global([data-header-logo-slot]:focus-visible) .bounce {
+    animation: paw-bounce 560ms 1 both;
+  }
+
+  /* Tap (touch / pen): the island flips data-bounce 1 <-> 2; distinct names restart the animation
+     without a reflow. */
+  .logo[data-bounce="1"] .bounce {
+    animation: paw-bounce-1 560ms 1 both;
+  }
+
+  .logo[data-bounce="2"] .bounce {
+    animation: paw-bounce-2 560ms 1 both;
+  }
+}
+
+/* Hover (real hover devices only): bounce once per hover. */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .hit:hover ~ .window .bounce,
+  :global([data-header-logo-slot]:hover) .bounce {
+    animation: paw-bounce 560ms 1 both;
+  }
+}
+
+/* No JavaScript: nothing will toggle the header logo, so show it statically. Must stay last. */
+@media (scripting: none) {
+  .compact {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Keyframes (transform only) ---------- */
+
+@keyframes paw-wave {
+  0% {
+    transform: rotate(0deg);
+  }
+  14% {
+    transform: rotate(-12deg);
+  }
+  32% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-7deg);
+  }
+  68% {
+    transform: rotate(4deg);
+  }
+  84% {
+    transform: rotate(-1.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Lift ~8 logo units (toes stay clear of the ring), land, a little rebound, rest. Uniform scale only
+   (review fix: the old 58% squash scaled X and Y unevenly, which changed the mark's proportions).
+   Percent = of the logo box. */
+@keyframes paw-bounce {
+  0% {
+    transform: translateY(0) scale(1);
+    animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  34% {
+    transform: translateY(-1.8%) scale(1.02);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
+  }
+  58% {
+    transform: translateY(0) scale(1); /* uniform: the mark's proportions never change */
+    animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  76% {
+    transform: translateY(-0.6%) scale(1);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes paw-bounce-1 {
+  0% {
+    transform: translateY(0) scale(1);
+    animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  34% {
+    transform: translateY(-1.8%) scale(1.02);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
+  }
+  58% {
+    transform: translateY(0) scale(1); /* uniform: the mark's proportions never change */
+    animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  76% {
+    transform: translateY(-0.6%) scale(1);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes paw-bounce-2 {
+  0% {
+    transform: translateY(0) scale(1);
+    animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  34% {
+    transform: translateY(-1.8%) scale(1.02);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
+  }
+  58% {
+    transform: translateY(0) scale(1); /* uniform: the mark's proportions never change */
+    animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1);
+  }
+  76% {
+    transform: translateY(-0.6%) scale(1);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.4);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}

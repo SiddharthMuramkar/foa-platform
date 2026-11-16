@@ -1,0 +1,247 @@
+/* PROTOTYPE — throwaway, never merge (https://github.com/SiddharthMuramkar/foa-platform/issues/9) */
+/*
+ * Variant A "Dock". ONE logo element (.fly) moves from the hero into the header's reserved logo slot.
+ * Stack per research/lean-motion-stack: CSS scroll-driven animation (no library), an
+ * IntersectionObserver island (dock-fallback.tsx) for the fallback and for reduced motion, CSS
+ * :hover/:active under motion-safe. Only `transform` (fly, paw, fallback header logo) and `opacity`
+ * (header logo) ever animate.
+ *
+ * Geometry (all CSS, no measuring):
+ *   - The hero logo is flush-left on the header's own content edge, directly under its slot, so the
+ *     dock is a straight rise + shrink (no horizontal travel at any width).
+ *   - Hero logo width W = m x header-logo height, so the docked scale is a plain number:
+ *     k = aspect / m (CSS cannot divide a length by a length portably).
+ *   - Docked top = header slot top = (header-h - 1px border - header-logo-h) / 2.
+ *   - Range D = distance at which the logo's BOTTOM edge, moving 1:1 with the page, meets the docked
+ *     logo's bottom edge. With linear keyframes the bottom edge stays glued to the content below, so
+ *     nothing ever slides under the logo: D ≈ 28vh on a 390×844 phone, ≈ 48vh on 1440×900.
+ */
+
+.root {
+  position: relative;
+  --m: 7; /* < 360px: W = 17.5rem */
+  --hero-pt: 1.5rem;
+  --pad: 1rem; /* = container px-4 */
+  --logo-w: calc(var(--header-logo-h) * var(--m));
+  --logo-h: calc(var(--logo-w) / var(--logo-aspect));
+  --hero-top: calc(var(--header-h) + var(--hero-pt));
+  --dock-k: calc(var(--logo-aspect) / var(--m));
+  --dock-y: calc(var(--header-h) / -2 - var(--hero-pt) - var(--header-logo-h) / 2 - 0.5px);
+  --dock-range: calc(var(--header-h) / 2 + var(--hero-pt) + var(--logo-h) - var(--header-logo-h) / 2 + 0.5px);
+}
+
+@media (min-width: 22.5rem) {
+  .root {
+    --m: 8; /* W = 20rem */
+  }
+}
+
+@media (min-width: 24rem) {
+  .root {
+    --m: 8.5; /* W = 21.25rem (340px of 358px at 390 wide) */
+  }
+}
+
+@media (min-width: 48rem) {
+  .root {
+    --m: 10.6667; /* header-logo-h is 3rem here: W = 32rem */
+    --hero-pt: 2.5rem;
+    --pad: 2rem; /* = md:px-8 */
+  }
+}
+
+@media (min-width: 64rem) {
+  .root {
+    --m: 13.3333; /* W = 40rem */
+  }
+}
+
+/* Same left edge as the header slot: mx-auto max-w-6xl (72rem) + container padding. */
+.main {
+  padding-top: var(--hero-pt);
+}
+
+.fly,
+.pawAnchor {
+  margin-left: calc(max(0px, (100% - 72rem) / 2) + var(--pad));
+  width: var(--logo-w);
+}
+
+/* Base state (no JS + no scroll-driven support, or reduced motion): a plain, static hero logo. */
+.fly {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  height: var(--logo-h);
+  transform-origin: 0 0;
+  pointer-events: none; /* never blocks the page or the header home link under it */
+}
+
+/* Dark mode plate (the wordmark is black). Scales with the logo; #14 owns the final treatment. */
+.fly::before {
+  content: "";
+  position: absolute;
+  inset: -3% -2%;
+  z-index: -1;
+  border-radius: 1.25rem;
+  background: var(--logo-plate);
+}
+
+.logoArt {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Paw layer: a second, decorative copy of the logo that draws ONLY the mark, stacked exactly on the
+   base copy (which hides its own mark). At rest the pixels are identical; the nudge rotates this HTML
+   layer around the mark centre (LOGO_PART_BOXES), so it is compositor-only and does not depend on
+   SVG bbox quirks (the stand-in's mark <use> reports the whole raster as its fill-box). */
+.logoArt [data-part="mark"] {
+  visibility: hidden;
+}
+
+.paw {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-origin: calc(var(--mark-cx) * 100%) calc(var(--mark-cy) * 100%);
+}
+
+.paw [data-part^="tile-"],
+.paw [data-part^="letter-"],
+.paw [data-part="wordmark"] {
+  display: none;
+}
+
+/* Paw hit area: an in-flow (non-moving) box over the mark at rest, ≥ 44×44 px. Decorative only. */
+.pawAnchor {
+  position: relative;
+  z-index: 1; /* above the static logo, below the sticky header (z-40) */
+  display: block;
+  height: 0;
+}
+
+.pawAnchor::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--logo-w) * var(--mark-cx));
+  top: calc(var(--logo-h) * var(--mark-cy));
+  width: max(2.75rem, var(--logo-w) * var(--mark-w));
+  height: max(2.75rem, var(--logo-h) * var(--mark-h));
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+
+.heroCopy {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.hint {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+/* Compact header logo (inlined SVG + its own paw layer): shown by the fallback, by reduced motion, and
+   without JS where the dock cannot run. Where the scroll-driven dock runs, the docked .fly IS the header
+   logo and this stays transparent. */
+.headerLogo {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--logo-plate);
+  opacity: 0;
+}
+
+@keyframes dock {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(var(--dock-y)) scale(var(--dock-k));
+  }
+}
+
+/* ── Motion allowed ─────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. Scroll-linked dock (Chrome 115+, Safari 26+, Firefox 159+). Compositor-only, no JS. */
+  @supports (animation-timeline: scroll()) {
+    .fly {
+      position: sticky;
+      top: var(--hero-top);
+      z-index: 50;
+      animation: dock 1ms linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px var(--dock-range);
+    }
+  }
+
+  /* 2. Fallback (iOS 16–18, Firefox ≤ 158): the hero logo is NOT sticky (a sticky logo leaves its box
+        empty once it docks); it scrolls away like any content. dock-fallback.tsx sets data-io and toggles
+        data-hero-out once < 20 % of the hero logo is visible below the header; the compact header logo
+        then rises 22 % and fades in. Time-based 200 ms, not scroll-linked (same pattern as C). */
+  .root[data-io] .headerLogo {
+    transform: translateY(22%);
+  }
+
+  .root[data-io][data-hero-out] .headerLogo {
+    opacity: 1;
+    transform: none;
+  }
+
+  .root[data-io][data-io-ready] .headerLogo {
+    transition:
+      opacity 200ms linear,
+      transform 200ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  /* 3. Paw nudge: a quick tilt with a little overshoot (bezier, not a spring). Touch: :active only,
+        so a tap tilts and springs back (no sticky hover). */
+  .paw {
+    transition: transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .pawAnchor:active ~ .fly .paw {
+    transform: rotate(-14deg);
+  }
+}
+
+/* Hover only where hover is real (no sticky hover after a tap). Separate rules: a browser without
+   :has() drops only the :has() rule, not the plain one. */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .pawAnchor:hover ~ .fly .paw {
+    transform: rotate(-12deg);
+  }
+
+  /* Docked: hovering the header home link nudges the paw of the docked logo. */
+  .root:has([data-header-logo-slot]:hover) .paw {
+    transform: rotate(-12deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .root:has([data-header-logo-slot]:focus-visible) .paw {
+    transform: rotate(-12deg);
+  }
+}
+
+/* ── Reduced motion: hero logo static; compact header logo fades in (opacity only) ─────────────
+   Every browser: a timed 200 ms fade switched by the island's observer (as B and C), never scrubbed by
+   scroll position, so the brand is never left half-transparent when the reader stops mid-scroll. */
+@media (prefers-reduced-motion: reduce) {
+  .pawAnchor {
+    display: none;
+  }
+
+  .root[data-io-ready] .headerLogo {
+    transition: opacity 200ms linear;
+  }
+
+  .root[data-hero-out] .headerLogo {
+    opacity: 1;
+  }
+}
